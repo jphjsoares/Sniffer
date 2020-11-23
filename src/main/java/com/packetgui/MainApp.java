@@ -3,8 +3,10 @@ package com.packetgui;
 import javax.swing.*;
 import com.packetsniffer.*;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class MainApp {
 
@@ -22,13 +24,18 @@ public class MainApp {
 
 
     private static JButton addCheckButton() {
-
+        TextField displayNetworkInterfaces = new TextField();
+        displayNetworkInterfaces.setBounds(50,100,300,300);
         JButton checkInterfaces = new JButton("Check interfaces");
         checkInterfaces.setBounds(130,400,200,40);
         checkInterfaces.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    displayNetworkInterfaces.setText(String.valueOf(sniff.checkInterfacesManual()));
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
         return checkInterfaces;
@@ -45,7 +52,6 @@ public class MainApp {
     }
 
     public static void main(String[] args) {
-
         createAndShowGUI();
     }
 }

@@ -4,6 +4,9 @@ import org.pcap4j.core.*;
 import org.pcap4j.util.NifSelector;
 import java.io.IOException;
 import com.sun.jna.Platform;
+import org.pcap4j.core.Pcaps;
+import java.util.List;
+
 
 
 public class Sniffer {
@@ -32,6 +35,22 @@ public class Sniffer {
         if (Platform.isWindows()) {
             System.out.println("bs_capt: " + ps.getNumPacketsCaptured());
         }
+    }
+
+    public static List<PcapNetworkInterface> checkInterfacesManual() throws IOException {
+        List<PcapNetworkInterface> allDevs = null;
+        try {
+            allDevs = Pcaps.findAllDevs();
+        } catch (PcapNativeException e) {
+            throw new IOException(e.getMessage());
+        }
+
+        if (allDevs == null || allDevs.isEmpty()) {
+            throw new IOException("No NIF to capture.");
+        }
+
+        System.out.println(allDevs);
+        return allDevs;
     }
 
     public static PcapNetworkInterface checkForNetworkInterface() {
@@ -67,9 +86,11 @@ public class Sniffer {
 
     }
 
-    public static void main(String[] args) throws PcapNativeException, NotOpenException {
+    public static void main(String[] args) throws PcapNativeException, NotOpenException, IOException {
 
-
+        //Just testing out getting all devices manually
+        checkInterfacesManual();
+        /*
         String filter = args.length != 0 ? args[0] : "";
 
         //Choose interface to sniff
@@ -86,6 +107,8 @@ public class Sniffer {
 
         //Close handler
         handle.close();
+
+         */
 
     }
 }
