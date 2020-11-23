@@ -1,0 +1,6 @@
+
+
+----> Let the user be able to choose a network adapter
+----> Let the user be able to choose how much time/packets to handle
+----> Give the size of all the packets
+----> Use whois to let the user know what IP is being responsible for most of the traffic
