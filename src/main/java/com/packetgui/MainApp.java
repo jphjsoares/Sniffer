@@ -54,7 +54,7 @@ public class MainApp {
         //Components initialize
         JFrame mainFrame = new JFrame("SniffSniff");
         JPanel mainPanel = new JPanel();
-        JTextArea netInterfaces = new JTextArea(30,40);
+        JTextArea netInterfaces = new JTextArea(20,30);
         JScrollPane scroll = new JScrollPane (netInterfaces,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); //Adds a scroll to textArea
