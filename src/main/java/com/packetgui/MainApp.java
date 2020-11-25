@@ -12,32 +12,31 @@ import java.util.List;
 
 public class MainApp {
 
-    static Sniffer sniff = new Sniffer();
-
+    private static Sniffer sniff = new Sniffer();
 
     private static JButton addCheckButton(JTextArea netInterfaces, JFrame frame) {
 
         JButton checkInterfaces = new JButton("Check interfaces");
-        checkInterfaces.setBounds(50,100,200,40);
 
         checkInterfaces.addActionListener(new ActionListener() {
             int numOfClicks = 0;
+
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 //Resize all windows after button click
-                frame.setSize(600,400);
                 netInterfaces.setBounds(50,10,500,250);
-                checkInterfaces.setBounds(250,300,200,40);
+                //checkInterfaces.setBounds(250,300,200,40);
+                List<PcapNetworkInterface> netsInterfaces;
 
                 try {
-                    List<PcapNetworkInterface> netsInterfaces = sniff.checkInterfacesManual();
+                    netsInterfaces = sniff.checkInterfacesManual();
                     if (numOfClicks >0) {
                         netInterfaces.setText("");
                     }
                     //Prints out a new line for every interface available
                     for( PcapNetworkInterface netInterface :  netsInterfaces){
-                        netInterfaces.append('\n' + netInterface.getDescription() + "- address -> " + netInterface.getAddresses().get(0).getAddress());
+                        netInterfaces.append('\n' + netInterface.getDescription() + "\nAddress -> " + netInterface.getAddresses().get(0).getAddress() + "\n" );
                     }
 
                 } catch (IOException ioException) {
@@ -52,14 +51,33 @@ public class MainApp {
     }
 
     private static void createAndShowMainGUI() {
-        JFrame mainFrame = new JFrame("PacketSniff");
-        JTextArea netInterfaces = new JTextArea();
+        //Components initialize
+        JFrame mainFrame = new JFrame("SniffSniff");
+        JPanel mainPanel = new JPanel();
+        JTextArea netInterfaces = new JTextArea(30,40);
+        JScrollPane scroll = new JScrollPane (netInterfaces,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); //Adds a scroll to textArea
+
+
+        //Text area edits
+        netInterfaces.setEditable(false);
+        netInterfaces.setLineWrap(true);
+
+        //Add components to main frame
+        mainPanel.add(scroll); //Adds scroll to main panel
+
+        mainFrame.add(mainPanel, BorderLayout.CENTER); //Adds main panel to frame
+        mainFrame.add(addCheckButton(netInterfaces, mainFrame), BorderLayout.SOUTH); //Adds check button
+
+
+        //MainFrame tweaks
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.add(netInterfaces);
-        mainFrame.setSize(300,200);
+        mainFrame.pack();
+        mainFrame.setLocationRelativeTo(null);
         mainFrame.setLayout(null);
         mainFrame.setVisible(true);
-        mainFrame.add(addCheckButton(netInterfaces, mainFrame));
+
     }
 
     public static void main(String[] args) {
