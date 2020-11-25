@@ -16,28 +16,35 @@ public class MainApp {
 
 
     private static JButton addCheckButton(JTextArea netInterfaces, JFrame frame) {
+
         JButton checkInterfaces = new JButton("Check interfaces");
         checkInterfaces.setBounds(50,100,200,40);
+
         checkInterfaces.addActionListener(new ActionListener() {
+            int numOfClicks = 0;
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.setSize(800,600);
-                netInterfaces.setBounds(50,10,700,500);
-                checkInterfaces.setBounds(250,400,200,40);
+
+                //Resize all windows after button click
+                frame.setSize(600,400);
+                netInterfaces.setBounds(50,10,500,250);
+                checkInterfaces.setBounds(250,300,200,40);
+
                 try {
                     List<PcapNetworkInterface> netsInterfaces = sniff.checkInterfacesManual();
-
+                    if (numOfClicks >0) {
+                        netInterfaces.setText("");
+                    }
                     //Prints out a new line for every interface available
                     for( PcapNetworkInterface netInterface :  netsInterfaces){
-
-                        //          Add text to the previous text area     Get the current interface name                    Get current interface local address
-                        netInterfaces.setText(netInterfaces.getText()+'\n'+netInterface.getDescription() + "- address -> " + netInterface.getAddresses().get(0).getAddress());
+                        netInterfaces.append('\n' + netInterface.getDescription() + "- address -> " + netInterface.getAddresses().get(0).getAddress());
                     }
-
 
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
+
+                numOfClicks++;
 
             }
         });
