@@ -5,6 +5,8 @@
             Instead of using nif selector, use manually core.Pcaps.findAllDevs and loop in each network interface
             Don't forget to handle the user choice (simulate nif.doSelect in swing)
 
+--> Make text area and button be relative to window size
+
 ----> Let the user be able to choose how much time/packets to handle
 
 ----> Give the size of all the packets

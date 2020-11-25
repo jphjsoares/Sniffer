@@ -38,7 +38,9 @@ public class Sniffer {
     }
 
     public static List<PcapNetworkInterface> checkInterfacesManual() throws IOException {
+
         List<PcapNetworkInterface> allDevs = null;
+
         try {
             allDevs = Pcaps.findAllDevs();
         } catch (PcapNativeException e) {
@@ -49,10 +51,15 @@ public class Sniffer {
             throw new IOException("No NIF to capture.");
         }
 
-        System.out.println(allDevs);
+        //Print out all the available network itnerfaces by line
+        for(PcapNetworkInterface netInterface : allDevs) {
+            System.out.println(netInterface);
+        }
+
         return allDevs;
     }
 
+    //Check for interface using nif
     public static PcapNetworkInterface checkForNetworkInterface() {
         PcapNetworkInterface nif = null;
         try {
@@ -90,6 +97,9 @@ public class Sniffer {
 
         //Just testing out getting all devices manually
         checkInterfacesManual();
+
+
+
         /*
         String filter = args.length != 0 ? args[0] : "";
 
