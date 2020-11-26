@@ -2,7 +2,9 @@ DONE ----> Manually look for interfaces and loop through them and add scroll
 
 ----> Set gaps on the button and the text area
 
-----> Make text area and button be relative to window size
+DONE ----> Make text area and button be relative to window size
+
+----> Create an input location
 
 ----> Let user choose which device to monitor
 

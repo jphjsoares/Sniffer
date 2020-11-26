@@ -12,7 +12,6 @@ import java.util.List;
 
 public class MainApp {
 
-    private static Sniffer sniff = new Sniffer();
 
     private static JButton addCheckButton(JTextArea netInterfaces, JFrame frame) {
 
@@ -30,10 +29,10 @@ public class MainApp {
                 List<PcapNetworkInterface> netsInterfaces;
 
                 try {
-                    netsInterfaces = sniff.checkInterfacesManual();
-                    if (numOfClicks >0) {
-                        netInterfaces.setText("");
-                    }
+                    netsInterfaces = Sniffer.checkInterfacesManual();
+
+                    if (numOfClicks >0) netInterfaces.setText("");
+
                     //Prints out a new line for every interface available
                     for( PcapNetworkInterface netInterface :  netsInterfaces){
                         netInterfaces.append('\n' + netInterface.getDescription() + "\nAddress -> " + netInterface.getAddresses().get(0).getAddress() + "\n" );
@@ -50,7 +49,8 @@ public class MainApp {
         return checkInterfaces;
     }
 
-    private static void createAndShowMainGUI() {
+
+    public static void main(String[] args) {
         //Components initialize
         JFrame mainFrame = new JFrame("SniffSniff");
         JPanel mainPanel = new JPanel();
@@ -72,15 +72,11 @@ public class MainApp {
 
 
         //MainFrame tweaks
+        mainFrame.setResizable(false); //Doesnt let resize window
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setLayout(null);
         mainFrame.setVisible(true);
-
-    }
-
-    public static void main(String[] args) {
-        createAndShowMainGUI();
     }
 }
