@@ -2,6 +2,8 @@ DONE ----> Manually look for interfaces and loop through them and add scroll
 
 ----> Set gaps on the button and the text area
 
+----> Ask for admin privileges (problems in linux)
+
 DONE ----> Make text area and button be relative to window size
 
 ----> Create an input location
