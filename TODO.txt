@@ -1,14 +1,16 @@
 DONE ----> Manually look for interfaces and loop through them and add scroll
 
-----> Set gaps on the button and the text area
+DONE ----> Set gaps on the button and the text area (Probably use grid layout)
 
 ----> Ask for admin privileges (problems in linux)
 
 DONE ----> Make text area and button be relative to window size
 
+DONE ----> Add interface ID for every found interface
+
 ----> Create an input location
 
-----> Let user choose which device to monitor
+----> Call the function to monitor network with user input
 
 ----> Let the user be able to choose how much time/packets to handle
 

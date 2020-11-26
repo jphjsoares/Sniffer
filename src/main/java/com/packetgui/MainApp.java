@@ -31,11 +31,14 @@ public class MainApp {
                 try {
                     netsInterfaces = Sniffer.checkInterfacesManual();
 
-                    if (numOfClicks >0) netInterfaces.setText("");
+                    if (numOfClicks >0) netInterfaces.setText(""); //Clears text after every click
+
+                    int interfaceID = 1;
 
                     //Prints out a new line for every interface available
                     for( PcapNetworkInterface netInterface :  netsInterfaces){
-                        netInterfaces.append('\n' + netInterface.getDescription() + "\nAddress -> " + netInterface.getAddresses().get(0).getAddress() + "\n" );
+                        netInterfaces.append('\n' + "[" + Integer.toString(interfaceID) + "] " + netInterface.getDescription() + "\nAddress -> " + netInterface.getAddresses().get(0).getAddress() + "\n" );
+                        interfaceID++;
                     }
 
                 } catch (IOException ioException) {
@@ -49,26 +52,25 @@ public class MainApp {
         return checkInterfaces;
     }
 
-
-    public static void main(String[] args) {
+    private static void createAndShowMainGUI() {
         //Components initialize
+        //GridLayout layout = new GridLayout(2,1);
         JFrame mainFrame = new JFrame("SniffSniff");
         JPanel mainPanel = new JPanel();
-        JTextArea netInterfaces = new JTextArea(20,30);
+        JTextArea netInterfaces = new JTextArea(20,40);
         JScrollPane scroll = new JScrollPane (netInterfaces,
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); //Adds a scroll to textArea
-
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); //Adds a scroll to textArea
 
         //Text area edits
         netInterfaces.setEditable(false);
         netInterfaces.setLineWrap(true);
 
-        //Add components to main frame
-        mainPanel.add(scroll); //Adds scroll to main panel
+        //Add components to main panel
+        mainPanel.add(scroll);
+        mainPanel.add(addCheckButton(netInterfaces, mainFrame), BorderLayout.SOUTH);
 
-        mainFrame.add(mainPanel, BorderLayout.CENTER); //Adds main panel to frame
-        mainFrame.add(addCheckButton(netInterfaces, mainFrame), BorderLayout.SOUTH); //Adds check button
+
+        mainFrame.add(mainPanel); //Adds main panel to frame
 
 
         //MainFrame tweaks
@@ -78,5 +80,15 @@ public class MainApp {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setLayout(null);
         mainFrame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        createAndShowMainGUI();
     }
 }
