@@ -21,7 +21,21 @@ public class MainApp {
     private static JFrame chooseInterfaceFrame = new JFrame("Choose interface");
     private static JPanel chooseInterfacePanel = new JPanel();
 
+    private static JFrame networkSniffInterface = new JFrame("Sniffing!");
 
+    private static void sniffNetworkInterface(int networkInterfaceIndex) {
+        System.out.println("Sniffing the network interface...");
+
+        JLabel testPlaceholder = new JLabel();
+        testPlaceholder.setText("Sniffing!!!!");
+        testPlaceholder.setBounds(10,10,130,100);
+
+        networkSniffInterface.setSize(500,500);
+        networkSniffInterface.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        networkSniffInterface.setLocationRelativeTo(null);
+        networkSniffInterface.setLayout(null);
+        networkSniffInterface.setVisible(true);
+    }
 
     private static void submitInterfaceToSniff() {
         JButton submitButton = new JButton("Submit");
@@ -48,6 +62,13 @@ public class MainApp {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Submit button was pressed, going to listen on: " + interfaceInput.getText());
+
+                chooseInterfaceFrame.setVisible(false);
+                chooseInterfaceFrame.dispose();
+
+                mainFrame.setVisible(false);
+
+                sniffNetworkInterface(Integer.parseInt(interfaceInput.getText()));
             }
         });
 

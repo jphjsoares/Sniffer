@@ -10,6 +10,8 @@ DONE ----> Add interface ID for every found interface
 
 DONE ----> Create an input location
 
+----> Do multiple checks on the input location
+
 ----> Call the function to monitor network with user input
 
 ----> Let the user be able to choose how much time/packets to handle
