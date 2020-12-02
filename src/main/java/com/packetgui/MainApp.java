@@ -37,6 +37,18 @@ public class MainApp {
         networkSniffInterface.setVisible(true);
     }
 
+    private static boolean checkInput(String input) {
+        boolean isInputValid = false;
+        //Check if its a number
+
+        //Check if its a number larger than the network interfaces available
+
+
+
+
+        return isInputValid;
+    }
+
     private static void submitInterfaceToSniff() {
         JButton submitButton = new JButton("Submit");
         submitButton.setBounds(100,100,140,40);
@@ -63,12 +75,24 @@ public class MainApp {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Submit button was pressed, going to listen on: " + interfaceInput.getText());
 
-                chooseInterfaceFrame.setVisible(false);
-                chooseInterfaceFrame.dispose();
+                boolean inputChecks = checkInput(interfaceInput.getText());
 
-                networkInterfaceListerFrame.setVisible(false);
+                if (inputChecks) {
+                    //Input is valid
+                    chooseInterfaceFrame.setVisible(false);
+                    chooseInterfaceFrame.dispose();
 
-                sniffNetworkInterface(Integer.parseInt(interfaceInput.getText()));
+                    networkInterfaceListerFrame.setVisible(false);
+
+                    sniffNetworkInterface(Integer.parseInt(interfaceInput.getText()));
+                } else {
+
+                    //Crete a Error message
+                    JOptionPane.showMessageDialog(chooseInterfaceFrame, "An error has occurred please check your input.");
+
+                }
+
+
             }
         });
 

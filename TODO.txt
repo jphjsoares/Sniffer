@@ -12,6 +12,8 @@ DONE ----> Create an input location
 
 ----> Do multiple checks on the input location
 
+----> Create error message
+
 ----> Call the function to monitor network with user input
 
 ----> Let the user be able to choose how much time/packets to handle
