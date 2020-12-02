@@ -86,10 +86,11 @@ public class MainApp {
 
                     sniffNetworkInterface(Integer.parseInt(interfaceInput.getText()));
                 } else {
-
                     //Crete a Error message
-                    JOptionPane.showMessageDialog(chooseInterfaceFrame, "An error has occurred please check your input.");
-
+                    JOptionPane.showMessageDialog(chooseInterfaceFrame,
+                            "Wow! Something went wrong... Check your input",
+                            "Input error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
 
 
