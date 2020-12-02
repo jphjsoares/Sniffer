@@ -1,6 +1,8 @@
 package com.packetgui;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import com.packetsniffer.*;
 import org.pcap4j.core.PcapNetworkInterface;
 
@@ -12,6 +14,44 @@ import java.util.List;
 
 public class MainApp {
 
+    private static JFrame mainFrame = new JFrame("SniffSniff");
+    private static JPanel mainPanel = new JPanel();
+    private static JTextArea netInterfaces = new JTextArea(10,30);
+
+    private static JFrame chooseInterfaceFrame = new JFrame("Choose interface");
+    private static JPanel chooseInterfacePanel = new JPanel();
+
+
+
+    private static void submitInterfaceToSniff() {
+        JButton submitButton = new JButton("Submit");
+        submitButton.setBounds(100,100,140,40);
+
+        JLabel infoSubmitLabel = new JLabel();
+        infoSubmitLabel.setText("Choose network interface");
+        infoSubmitLabel.setBounds(10,10,130,100);
+
+        JTextField interfaceInput = new JTextField();
+        interfaceInput.setBounds(145,50,130,30);
+
+        chooseInterfaceFrame.add(submitButton);
+        chooseInterfaceFrame.add(infoSubmitLabel);
+        chooseInterfaceFrame.add(interfaceInput);
+
+        chooseInterfaceFrame.setSize(300,200);
+        chooseInterfaceFrame.setLocationRelativeTo(mainFrame);
+        chooseInterfaceFrame.setResizable(false);
+        chooseInterfaceFrame.setLayout(null);
+        chooseInterfaceFrame.setVisible(true);
+
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Submit button was pressed, going to listen on: " + interfaceInput.getText());
+            }
+        });
+
+    }
 
     private static JButton addCheckButton(JTextArea netInterfaces, JFrame frame) {
 
@@ -47,17 +87,20 @@ public class MainApp {
 
                 numOfClicks++;
 
+                checkInterfaces.setVisible(false);
+                mainPanel.remove(checkInterfaces);
+
+                submitInterfaceToSniff();
             }
+
+
         });
         return checkInterfaces;
     }
 
     private static void createAndShowMainGUI() {
         //Components initialize
-        //GridLayout layout = new GridLayout(2,1);
-        JFrame mainFrame = new JFrame("SniffSniff");
-        JPanel mainPanel = new JPanel();
-        JTextArea netInterfaces = new JTextArea(20,40);
+
         JScrollPane scroll = new JScrollPane (netInterfaces,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); //Adds a scroll to textArea
 
@@ -66,8 +109,8 @@ public class MainApp {
         netInterfaces.setLineWrap(true);
 
         //Add components to main panel
-        mainPanel.add(scroll);
-        mainPanel.add(addCheckButton(netInterfaces, mainFrame), BorderLayout.SOUTH);
+        mainPanel.add(scroll, BorderLayout.EAST);
+        mainPanel.add(addCheckButton(netInterfaces, mainFrame));
 
 
         mainFrame.add(mainPanel); //Adds main panel to frame

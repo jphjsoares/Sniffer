@@ -8,7 +8,7 @@ DONE ----> Make text area and button be relative to window size
 
 DONE ----> Add interface ID for every found interface
 
-----> Create an input location
+DONE ----> Create an input location
 
 ----> Call the function to monitor network with user input
 
