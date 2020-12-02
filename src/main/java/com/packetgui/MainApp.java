@@ -14,9 +14,9 @@ import java.util.List;
 
 public class MainApp {
 
-    private static JFrame mainFrame = new JFrame("SniffSniff");
-    private static JPanel mainPanel = new JPanel();
-    private static JTextArea netInterfaces = new JTextArea(10,30);
+    private static JFrame networkInterfaceListerFrame = new JFrame("Network Interface Lister");
+    private static JPanel networkListerPanel = new JPanel();
+    private static JTextArea netInterfacesTextList = new JTextArea(10,30);
 
     private static JFrame chooseInterfaceFrame = new JFrame("Choose interface");
     private static JPanel chooseInterfacePanel = new JPanel();
@@ -53,7 +53,7 @@ public class MainApp {
         chooseInterfaceFrame.add(interfaceInput);
 
         chooseInterfaceFrame.setSize(300,200);
-        chooseInterfaceFrame.setLocationRelativeTo(mainFrame);
+        chooseInterfaceFrame.setLocationRelativeTo(networkInterfaceListerFrame);
         chooseInterfaceFrame.setResizable(false);
         chooseInterfaceFrame.setLayout(null);
         chooseInterfaceFrame.setVisible(true);
@@ -66,7 +66,7 @@ public class MainApp {
                 chooseInterfaceFrame.setVisible(false);
                 chooseInterfaceFrame.dispose();
 
-                mainFrame.setVisible(false);
+                networkInterfaceListerFrame.setVisible(false);
 
                 sniffNetworkInterface(Integer.parseInt(interfaceInput.getText()));
             }
@@ -109,7 +109,7 @@ public class MainApp {
                 numOfClicks++;
 
                 checkInterfaces.setVisible(false);
-                mainPanel.remove(checkInterfaces);
+                networkListerPanel.remove(checkInterfaces);
 
                 submitInterfaceToSniff();
             }
@@ -119,31 +119,31 @@ public class MainApp {
         return checkInterfaces;
     }
 
-    private static void createAndShowMainGUI() {
+    private static void createAndShowNetInterfaceLister() {
         //Components initialize
 
-        JScrollPane scroll = new JScrollPane (netInterfaces,
+        JScrollPane scroll = new JScrollPane (netInterfacesTextList,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); //Adds a scroll to textArea
 
         //Text area edits
-        netInterfaces.setEditable(false);
-        netInterfaces.setLineWrap(true);
+        netInterfacesTextList.setEditable(false);
+        netInterfacesTextList.setLineWrap(true);
 
         //Add components to main panel
-        mainPanel.add(scroll, BorderLayout.EAST);
-        mainPanel.add(addCheckButton(netInterfaces, mainFrame));
+        networkListerPanel.add(scroll, BorderLayout.EAST);
+        networkListerPanel.add(addCheckButton(netInterfacesTextList, networkInterfaceListerFrame));
 
 
-        mainFrame.add(mainPanel); //Adds main panel to frame
+        networkInterfaceListerFrame.add(networkListerPanel); //Adds main panel to frame
 
 
         //MainFrame tweaks
-        mainFrame.setResizable(false); //Doesnt let resize window
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.pack();
-        mainFrame.setLocationRelativeTo(null);
-        mainFrame.setLayout(null);
-        mainFrame.setVisible(true);
+        networkInterfaceListerFrame.setResizable(false); //Doesnt let resize window
+        networkInterfaceListerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        networkInterfaceListerFrame.pack();
+        networkInterfaceListerFrame.setLocationRelativeTo(null);
+        networkInterfaceListerFrame.setLayout(null);
+        networkInterfaceListerFrame.setVisible(true);
     }
 
     public static void main(String[] args) {
@@ -153,6 +153,6 @@ public class MainApp {
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        createAndShowMainGUI();
+        createAndShowNetInterfaceLister();
     }
 }
