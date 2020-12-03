@@ -37,16 +37,26 @@ public class MainApp {
         networkSniffInterface.setVisible(true);
     }
 
-    private static boolean checkInput(String input) {
-        boolean isInputValid = false;
-        //Check if its a number
+    private static boolean checkInput(String input) throws IOException {
+
+        int inputAsNumber;
+
+        //Check if its not null
+        if (input == null) {
+            return false;
+        }
+
+        // Check if its an integer
+        try {
+            inputAsNumber= Integer.parseInt(input);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
 
         //Check if its a number larger than the network interfaces available
+        if(inputAsNumber <= Sniffer.checkInterfacesManual().size() && inputAsNumber > 0 ) return true;
 
-
-
-
-        return isInputValid;
+        return false;
     }
 
     private static void submitInterfaceToSniff() {
@@ -75,7 +85,13 @@ public class MainApp {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Submit button was pressed, going to listen on: " + interfaceInput.getText());
 
-                boolean inputChecks = checkInput(interfaceInput.getText());
+                boolean inputChecks = false;
+
+                try {
+                    inputChecks = checkInput(interfaceInput.getText());
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
 
                 if (inputChecks) {
                     //Input is valid
@@ -92,7 +108,6 @@ public class MainApp {
                             "Input error",
                             JOptionPane.ERROR_MESSAGE);
                 }
-
 
             }
         });
@@ -126,6 +141,7 @@ public class MainApp {
                         netInterfaces.append('\n' + "[" + Integer.toString(interfaceID) + "] " + netInterface.getDescription() + "\nAddress -> " + netInterface.getAddresses().get(0).getAddress() + "\n" );
                         interfaceID++;
                     }
+                    System.out.println(netsInterfaces.size());
 
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
