@@ -18,6 +18,8 @@ DONE ----> Call the function to monitor network with user input
 
 ----> Make sniffed packets visible in the GUI
 
+----> Probably make another class for packet sniffing frames
+
 ----> Make sniffing window resizable
 
 FEATURES
