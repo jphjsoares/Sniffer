@@ -10,11 +10,17 @@ DONE ----> Add interface ID for every found interface
 
 DONE ----> Create an input location
 
-----> Do multiple checks on the input location
+DONE ----> Do multiple checks on the input location
 
-----> Create error message
+DONE ----> Create error message
 
-----> Call the function to monitor network with user input
+DONE ----> Call the function to monitor network with user input
+
+----> Make sniffed packets visible in the GUI
+
+----> Make sniffing window resizable
+
+FEATURES
 
 ----> Let the user be able to choose how much time/packets to handle
 

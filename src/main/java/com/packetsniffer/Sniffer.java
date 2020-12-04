@@ -13,14 +13,14 @@ public class Sniffer {
 
     public Sniffer() {}
 
-    private static final String COUNT_KEY = Sniffer.class.getName() + ".count";
-    private static final int COUNT = Integer.getInteger(COUNT_KEY, 5);
+    public static final String COUNT_KEY = Sniffer.class.getName() + ".count";
+    public static final int COUNT = Integer.getInteger(COUNT_KEY, 5);
 
-    private static final String READ_TIMEOUT_KEY = Sniffer.class.getName() + ".readTimeout";
-    private static final int READ_TIMEOUT = Integer.getInteger(READ_TIMEOUT_KEY, 10); // [ms]
+    public static final String READ_TIMEOUT_KEY = Sniffer.class.getName() + ".readTimeout";
+    public static final int READ_TIMEOUT = Integer.getInteger(READ_TIMEOUT_KEY, 10); // [ms]
 
-    private static final String SNAPLEN_KEY = Sniffer.class.getName() + ".snaplen";
-    private static final int SNAPLEN = Integer.getInteger(SNAPLEN_KEY, 65536); // [bytes]
+    public static final String SNAPLEN_KEY = Sniffer.class.getName() + ".snaplen";
+    public static final int SNAPLEN = Integer.getInteger(SNAPLEN_KEY, 65536); // [bytes]
 
 
 
@@ -75,6 +75,7 @@ public class Sniffer {
     public static void handlePackets(PcapHandle handle) throws NotOpenException {
         long totalLength = 0;
         int num = 0;
+
         while (true) {
             PcapPacket packet = handle.getNextPacket();
             if (packet == null) {
@@ -89,15 +90,13 @@ public class Sniffer {
                 }
             }
         }
-        System.out.println("Received " + totalLength);
-
+        System.out.println("Exitting sniffing.... Goodbye!");
     }
 
     public static void main(String[] args) throws PcapNativeException, NotOpenException, IOException {
 
         //Just testing out getting all devices manually
         checkInterfacesManual();
-
 
 
         /*

@@ -4,6 +4,9 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import com.packetsniffer.*;
+import org.pcap4j.core.NotOpenException;
+import org.pcap4j.core.PcapHandle;
+import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.core.PcapNetworkInterface;
 
 import java.awt.*;
@@ -21,20 +24,41 @@ public class MainApp {
     private static JFrame chooseInterfaceFrame = new JFrame("Choose interface");
     private static JPanel chooseInterfacePanel = new JPanel();
 
-    private static JFrame networkSniffInterface = new JFrame("Sniffing!");
+    private static JFrame networkSniffInterfaceFrame = new JFrame("Sniffing!");
+    private static JPanel networkLogPanel = new JPanel();
+    private static JTextArea networkSnifferLog = new JTextArea(10, 40);
 
-    private static void sniffNetworkInterface(int networkInterfaceIndex) {
-        System.out.println("Sniffing the network interface...");
+    private static List<PcapNetworkInterface> netsInterfaces;
 
-        JLabel testPlaceholder = new JLabel();
-        testPlaceholder.setText("Sniffing!!!!");
-        testPlaceholder.setBounds(10,10,130,100);
+    private static void sniffNetworkInterface(int networkInterfaceIndex, PcapHandle handle) {
 
-        networkSniffInterface.setSize(500,500);
-        networkSniffInterface.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        networkSniffInterface.setLocationRelativeTo(null);
-        networkSniffInterface.setLayout(null);
-        networkSniffInterface.setVisible(true);
+        JScrollPane scroll = new JScrollPane (networkSnifferLog,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); //Adds a scroll to textArea
+
+        //Text area edits
+        networkSnifferLog.setEditable(false);
+        networkSnifferLog.setLineWrap(true);
+
+        //Add components to main panel
+        networkLogPanel.add(scroll, BorderLayout.EAST);
+
+        networkSniffInterfaceFrame.add(networkLogPanel);
+
+
+        networkSniffInterfaceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        networkSniffInterfaceFrame.pack();
+        networkSniffInterfaceFrame.setLocationRelativeTo(null);
+        networkSniffInterfaceFrame.setLayout(null);
+        networkSniffInterfaceFrame.setVisible(true);
+
+        networkSnifferLog.append("TEST LOGGER PLACEHOLDER");
+
+        try {
+            Sniffer.handlePackets(handle);
+        } catch (NotOpenException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private static boolean checkInput(String input) throws IOException {
@@ -100,7 +124,18 @@ public class MainApp {
 
                     networkInterfaceListerFrame.setVisible(false);
 
-                    sniffNetworkInterface(Integer.parseInt(interfaceInput.getText()));
+                    //I need to implement this
+                    //nifs.get(nifIdx) --> this will get the nif to sniff to and use in the handler
+                    PcapNetworkInterface networkInterfaceToUseInHandler  = netsInterfaces.get(Integer.parseInt(interfaceInput.getText())-1);
+                    System.out.println("\n\n" + networkInterfaceToUseInHandler);
+                    final PcapHandle handle;
+                    try {
+                        handle = networkInterfaceToUseInHandler.openLive(Sniffer.SNAPLEN, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, Sniffer.READ_TIMEOUT);
+                        sniffNetworkInterface(Integer.parseInt(interfaceInput.getText()), handle);
+                    } catch (PcapNativeException pcapNativeException) {
+                        pcapNativeException.printStackTrace();
+                    }
+
                 } else {
                     //Crete a Error message
                     JOptionPane.showMessageDialog(chooseInterfaceFrame,
@@ -127,7 +162,7 @@ public class MainApp {
                 //Resize all windows after button click
                 netInterfaces.setBounds(50,10,500,250);
                 //checkInterfaces.setBounds(250,300,200,40);
-                List<PcapNetworkInterface> netsInterfaces;
+
 
                 try {
                     netsInterfaces = Sniffer.checkInterfacesManual();
