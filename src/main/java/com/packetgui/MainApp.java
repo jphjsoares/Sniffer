@@ -4,10 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import com.packetsniffer.*;
-import org.pcap4j.core.NotOpenException;
-import org.pcap4j.core.PcapHandle;
-import org.pcap4j.core.PcapNativeException;
-import org.pcap4j.core.PcapNetworkInterface;
+import org.pcap4j.core.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,12 +22,72 @@ public class MainApp {
     private static JPanel chooseInterfacePanel = new JPanel();
 
     private static JFrame networkSniffInterfaceFrame = new JFrame("Sniffing!");
-    private static JPanel networkLogPanel = new JPanel();
+    private static JPanel networkLogPanel = new JPanel(new FlowLayout());
     private static JTextArea networkSnifferLog = new JTextArea(10, 40);
 
     private static List<PcapNetworkInterface> netsInterfaces;
 
     private static void sniffNetworkInterface(int networkInterfaceIndex, PcapHandle handle) {
+        boolean keepSniffing = true;
+        JScrollPane scrollSniffPanel = new JScrollPane(networkSnifferLog);
+
+        networkSnifferLog.setEditable(false);
+        networkSnifferLog.setLineWrap(true);
+
+        networkLogPanel.add(scrollSniffPanel);
+
+        networkSniffInterfaceFrame.setContentPane(networkLogPanel);
+        networkSniffInterfaceFrame.setLocationRelativeTo(null);
+        networkSniffInterfaceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        networkSniffInterfaceFrame.pack();
+        networkSniffInterfaceFrame.setVisible(true);
+        networkSniffInterfaceFrame.setResizable(false);
+
+
+        //LEARN MORE ABOUT JAVA SWING CONCURRENCY TO FINISH THIS part
+        /*
+        while (keepSniffing) {
+            PcapPacket newPacket = null;
+
+            //Try to sniff a packet
+            try {
+                newPacket = Sniffer.getAPacket(handle);
+            } catch (NotOpenException e) {
+                e.printStackTrace();
+            }
+
+            if (newPacket != null) {
+                //networkSnifferLog.append(String.valueOf(newPacket.getPayload()+"\n"));
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        networkSnifferLog.append("Hello world");
+                    }
+                });
+
+            }
+        }*/
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+    private static void sniffNetworkInterface(int networkInterfaceIndex, PcapHandle handle) {
+
+        //Will be changed after button to-be created is pressed
+        boolean keepSniffing = true;
+        PcapPacket newPacket;
 
         JScrollPane scroll = new JScrollPane (networkSnifferLog,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); //Adds a scroll to textArea
@@ -38,28 +95,41 @@ public class MainApp {
         //Text area edits
         networkSnifferLog.setEditable(false);
         networkSnifferLog.setLineWrap(true);
+        networkSnifferLog.setVisible(true);
 
         //Add components to main panel
-        networkLogPanel.add(scroll, BorderLayout.EAST);
+        networkLogPanel.add(new JScrollPane(scroll));
+        networkLogPanel.setVisible(true);
 
         networkSniffInterfaceFrame.add(networkLogPanel);
 
-
         networkSniffInterfaceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        networkSniffInterfaceFrame.setContentPane(networkLogPanel);
         networkSniffInterfaceFrame.pack();
         networkSniffInterfaceFrame.setLocationRelativeTo(null);
         networkSniffInterfaceFrame.setLayout(null);
         networkSniffInterfaceFrame.setVisible(true);
 
-        networkSnifferLog.append("TEST LOGGER PLACEHOLDER");
+        while (keepSniffing) {
+            try {
 
-        try {
-            Sniffer.handlePackets(handle);
-        } catch (NotOpenException e) {
-            e.printStackTrace();
+                //Get a packet
+                newPacket = Sniffer.getAPacket(handle);
+
+                //If the packet is not null
+                if(newPacket != null) {
+                    System.out.println(newPacket);
+                    networkSnifferLog.append(String.valueOf(newPacket));
+                }
+
+            } catch (NotOpenException e) {
+                e.printStackTrace();
+            }
         }
+    }*/
 
-    }
+
+
 
     private static boolean checkInput(String input) throws IOException {
 
@@ -198,8 +268,7 @@ public class MainApp {
     private static void createAndShowNetInterfaceLister() {
         //Components initialize
 
-        JScrollPane scroll = new JScrollPane (netInterfacesTextList,
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); //Adds a scroll to textArea
+        JScrollPane scroll = new JScrollPane (netInterfacesTextList); //Adds a scroll to textArea
 
         //Text area edits
         netInterfacesTextList.setEditable(false);

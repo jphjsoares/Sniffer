@@ -72,11 +72,17 @@ public class Sniffer {
         }
     }
 
+    public static PcapPacket getAPacket(PcapHandle handle) throws NotOpenException {
+        PcapPacket packet = handle.getNextPacket();
+        return packet;
+    }
+
     public static void handlePackets(PcapHandle handle) throws NotOpenException {
         long totalLength = 0;
         int num = 0;
 
         while (true) {
+
             PcapPacket packet = handle.getNextPacket();
             if (packet == null) {
                 continue;

@@ -16,7 +16,10 @@ DONE ----> Create error message
 
 DONE ----> Call the function to monitor network with user input
 
-----> Make sniffed packets visible in the GUI
+----> Make sniffed packets visible in the GUI (THE PACKETS WILL ONLY APPEAR AFTER THE LOOP IS DONE)
+        We are better off using concurrency here!
+
+----> To be able to stop during the sniffing, add a button to cancel
 
 ----> Probably make another class for packet sniffing frames
 
