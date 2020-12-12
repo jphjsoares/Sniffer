@@ -1,19 +1,17 @@
 package com.packetgui;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.text.DefaultCaret;
-
-import com.packetsniffer.*;
+import com.packetsniffer.Sniffer;
 import org.pcap4j.core.*;
 
+import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
-public class MainApp {
+public class ShowAndSelectNetInterfaceGUI {
 
     private static JFrame networkInterfaceListerFrame = new JFrame("Network Interface Lister");
     private static JPanel networkListerPanel = new JPanel();
@@ -22,60 +20,9 @@ public class MainApp {
     private static JFrame chooseInterfaceFrame = new JFrame("Choose interface");
     private static JPanel chooseInterfacePanel = new JPanel();
 
-    private static JFrame networkSniffInterfaceFrame = new JFrame("Sniffing!");
-    private static JPanel networkLogPanel = new JPanel(new FlowLayout());
-    private static JTextArea networkSnifferLog = new JTextArea(10, 40);
-
     private static List<PcapNetworkInterface> netsInterfaces;
 
-    private static void sniffNetworkInterface(int networkInterfaceIndex, PcapHandle handle) {
-        boolean keepSniffing = true;
-        JScrollPane scrollSniffPanel = new JScrollPane(networkSnifferLog);
-
-        networkSnifferLog.setEditable(false);
-        networkSnifferLog.setLineWrap(true);
-
-        //Scroll to the bottom on every update
-        DefaultCaret caret = (DefaultCaret)networkSnifferLog.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-
-        networkLogPanel.add(scrollSniffPanel);
-
-        networkSniffInterfaceFrame.setContentPane(networkLogPanel);
-        networkSniffInterfaceFrame.setLocationRelativeTo(null);
-        networkSniffInterfaceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        networkSniffInterfaceFrame.pack();
-        networkSniffInterfaceFrame.setVisible(true);
-        networkSniffInterfaceFrame.setResizable(false);
-
-        //Get packets
-        new Thread(new Runnable() {
-            public void run() {
-
-                while(keepSniffing) {
-
-                    PcapPacket newPacket = null;
-
-                    try {
-                        newPacket = Sniffer.getAPacket(handle);
-                    } catch (NotOpenException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (newPacket != null) {
-                        networkSnifferLog.append(String.valueOf(newPacket));
-                    }
-
-                    try {
-                        java.lang.Thread.sleep(1);
-                    } catch(Exception e) { }
-
-                }
-            }
-        }).start();
-
-    }
-
+    /////////////////////////////////////////////////////////////////////////////////////////////////
 
     private static boolean checkInput(String input) throws IOException {
 
@@ -147,7 +94,7 @@ public class MainApp {
                     final PcapHandle handle;
                     try {
                         handle = networkInterfaceToUseInHandler.openLive(Sniffer.SNAPLEN, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, Sniffer.READ_TIMEOUT);
-                        sniffNetworkInterface(Integer.parseInt(interfaceInput.getText()), handle);
+                        SniffGUI.sniffNetworkInterface(Integer.parseInt(interfaceInput.getText()), handle);
                     } catch (PcapNativeException pcapNativeException) {
                         pcapNativeException.printStackTrace();
                     }
