@@ -2,8 +2,6 @@ DONE ----> Manually look for interfaces and loop through them and add scroll
 
 DONE ----> Set gaps on the button and the text area (Probably use grid layout)
 
-----> Ask for admin privileges (problems in linux)
-
 DONE ----> Make text area and button be relative to window size
 
 DONE ----> Add interface ID for every found interface
@@ -22,6 +20,7 @@ DONE ----> Make sniffed packets visible in the GUI (THE PACKETS WILL ONLY APPEAR
 DONE ----> To be able to stop during the sniffing, add a button to "end sniff"
 
 ----> Be able to resume the thread after pausing it!
+    IDEAS: Destroy the thread on pause and create a new thread on resume;
 
 ----> After sniffing, give the user the statistics of the whole process, and possibly the duration of the sniffing
 
