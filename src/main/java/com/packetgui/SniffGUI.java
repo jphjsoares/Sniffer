@@ -1,22 +1,75 @@
 package com.packetgui;
 
-import com.packetsniffer.Sniffer;
-import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PcapHandle;
-import org.pcap4j.core.PcapPacket;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SniffGUI {
 
-    private static JFrame networkSniffInterfaceFrame = new JFrame("Sniffing!");
-    private static JPanel networkLogPanel = new JPanel(new FlowLayout());
-    private static JTextArea networkSnifferLog = new JTextArea(10, 40);
+    private static  final JFrame networkSniffInterfaceFrame = new JFrame("Sniffing!");
+    private static final JPanel networkLogPanel = new JPanel(new BorderLayout());
+    private static final JTextArea networkSnifferLog = new JTextArea(10, 40);
+
+    private static final JToolBar toolbar = new JToolBar();
+
+
+
+    private static JToolBar createToolbar(Thread thread, SniffingThread runnable) {
+        toolbar.setRollover(true);
+        JButton pauseSniff = new JButton("Pause");
+        JButton startSniff = new JButton("Start sniffing");
+
+        //Cant show a button to pause before the thread is being actually executed
+        pauseSniff.setVisible(false);
+
+        toolbar.add(startSniff);
+        toolbar.add(pauseSniff);
+
+        //Start the whole process after the button to start is pressed
+        startSniff.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                thread.start();
+                startSniff.setVisible(false);
+                pauseSniff.setVisible(true);
+            }
+        });
+
+        pauseSniff.addActionListener(new ActionListener() {
+            boolean isSetToResume = false;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                //Button was pressed to pause
+                if(!isSetToResume) {
+                    isSetToResume = true;
+                    pauseSniff.setText("Resume");
+                    runnable.pauseTheSniff();
+                }
+
+                //Button was pressed to resume
+                else if (isSetToResume) {
+                    isSetToResume = false;
+                    pauseSniff.setText("Pause");
+                    thread.start();
+                    //runnable.continueTheSniff();
+
+                }
+            }
+        });
+        return toolbar;
+    }
 
     public static void sniffNetworkInterface(int networkInterfaceIndex, PcapHandle handle) {
-        boolean keepSniffing = true;
+
+        SniffingThread threadOfSniff = new SniffingThread(handle, networkSnifferLog);
+        Thread thread = new Thread(threadOfSniff);
+
         JScrollPane scrollSniffPanel = new JScrollPane(networkSnifferLog);
 
         networkSnifferLog.setEditable(false);
@@ -26,7 +79,9 @@ public class SniffGUI {
         DefaultCaret caret = (DefaultCaret)networkSnifferLog.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
-        networkLogPanel.add(scrollSniffPanel);
+        networkLogPanel.add(createToolbar(thread, threadOfSniff),BorderLayout.NORTH);
+        networkLogPanel.add(scrollSniffPanel, BorderLayout.CENTER);
+
 
         networkSniffInterfaceFrame.setContentPane(networkLogPanel);
         networkSniffInterfaceFrame.setLocationRelativeTo(null);
@@ -35,31 +90,8 @@ public class SniffGUI {
         networkSniffInterfaceFrame.setVisible(true);
         networkSniffInterfaceFrame.setResizable(false);
 
-        //Get packets
-        new Thread(new Runnable() {
-            public void run() {
-
-                while(keepSniffing) {
-
-                    PcapPacket newPacket = null;
-
-                    try {
-                        newPacket = Sniffer.getAPacket(handle);
-                    } catch (NotOpenException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (newPacket != null) {
-                        networkSnifferLog.append(String.valueOf(newPacket));
-                    }
-
-                    try {
-                        java.lang.Thread.sleep(1);
-                    } catch(Exception e) { }
-
-                }
-            }
-        }).start();
+        //Get packets on window opening
+        //thread.start();
 
     }
 }

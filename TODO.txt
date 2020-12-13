@@ -19,7 +19,9 @@ DONE ----> Call the function to monitor network with user input
 DONE ----> Make sniffed packets visible in the GUI (THE PACKETS WILL ONLY APPEAR AFTER THE LOOP IS DONE)
         We are better off using concurrency here!
 
-----> To be able to stop during the sniffing, add a button to "end sniff"
+DONE ----> To be able to stop during the sniffing, add a button to "end sniff"
+
+----> Be able to resume the thread after pausing it!
 
 ----> After sniffing, give the user the statistics of the whole process, and possibly the duration of the sniffing
 
@@ -30,6 +32,8 @@ DONE ----> Make sniffed packets visible in the GUI (THE PACKETS WILL ONLY APPEAR
 FEATURES
 
 ----> Let the user be able to choose how much time/packets to handle
+
+----> While sniffing, print out some statistics
 
 ----> Give the size of all the packets
 
