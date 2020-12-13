@@ -18,7 +18,7 @@ public class SniffGUI {
 
 
 
-    private static JToolBar createToolbar(Thread thread, SniffingThread runnable) {
+    private static JToolBar createToolbar(Thread thread, SniffingThread runnable, PcapHandle handler) {
         toolbar.setRollover(true);
         JButton pauseSniff = new JButton("Pause");
         JButton startSniff = new JButton("Start sniffing");
@@ -41,23 +41,36 @@ public class SniffGUI {
 
         pauseSniff.addActionListener(new ActionListener() {
             boolean isSetToResume = false;
+            int timesPaused = 0;
+            PcapHandle handle = handler;
+            SniffingThread threadOfSniff = new SniffingThread(handle, networkSnifferLog);
 
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 //Button was pressed to pause
                 if(!isSetToResume) {
+
                     isSetToResume = true;
                     pauseSniff.setText("Resume");
-                    runnable.pauseTheSniff();
+
+                    if (timesPaused > 0) {
+                        threadOfSniff.killThread();
+                    } else {
+                        runnable.killThread(); // Works the first time pause is pressed
+                    }
+
+                    timesPaused++;
                 }
 
                 //Button was pressed to resume
                 else if (isSetToResume) {
                     isSetToResume = false;
                     pauseSniff.setText("Pause");
-                    thread.start();
-                    //runnable.continueTheSniff();
+
+                    //Start a new thread
+                    new Thread(threadOfSniff).start();
+                    threadOfSniff.setKeepSniffing(true);
 
                 }
             }
@@ -79,7 +92,7 @@ public class SniffGUI {
         DefaultCaret caret = (DefaultCaret)networkSnifferLog.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
-        networkLogPanel.add(createToolbar(thread, threadOfSniff),BorderLayout.NORTH);
+        networkLogPanel.add(createToolbar(thread, threadOfSniff, handle),BorderLayout.NORTH);
         networkLogPanel.add(scrollSniffPanel, BorderLayout.CENTER);
 
 
@@ -89,9 +102,5 @@ public class SniffGUI {
         networkSniffInterfaceFrame.pack();
         networkSniffInterfaceFrame.setVisible(true);
         networkSniffInterfaceFrame.setResizable(false);
-
-        //Get packets on window opening
-        //thread.start();
-
     }
 }

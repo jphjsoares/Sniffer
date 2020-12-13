@@ -9,7 +9,7 @@ import javax.swing.*;
 
 /*
 public class SniffingThread extends Thread{
-    boolean keepSniffing = true;
+    private volatile boolean keepSniffing = true;
     PcapHandle globalPcapHandler;
     JTextArea networkSnifferLog;
 
@@ -20,7 +20,10 @@ public class SniffingThread extends Thread{
     }
 
     public void run() {
-        while(keepSniffing) {
+
+        System.out.println("Starting a new thread.....");
+
+        while (keepSniffing && !Thread.interrupted()) {
 
             PcapPacket newPacket = null;
 
@@ -36,16 +39,20 @@ public class SniffingThread extends Thread{
 
             try {
                 java.lang.Thread.sleep(1);
-            } catch(Exception e) { }
-
+            } catch (Exception e) {}
         }
+
+        System.out.println("Exiting thread");
     }
-    public void pauseTheSniff() {
+
+    public void killThread() {
         keepSniffing = false;
     }
-}
+}*/
 
-*/
+
+
+
 
 public class SniffingThread implements Runnable{
     private volatile boolean keepSniffing = true;
@@ -59,6 +66,8 @@ public class SniffingThread implements Runnable{
     }
 
     public void run() {
+
+        System.out.println("Starting a new thread.....");
 
         while (keepSniffing) {
 
@@ -79,13 +88,16 @@ public class SniffingThread implements Runnable{
             } catch (Exception e) {}
         }
 
+        System.out.println("Exiting thread");
     }
 
-    public void continueTheSniff() {
-        keepSniffing = true;
-    }
-
-    public void pauseTheSniff() {
+    public void killThread() {
         keepSniffing = false;
     }
+
+    public void setKeepSniffing(boolean toSniff){
+        keepSniffing = toSniff;
+    }
+
 }
+
