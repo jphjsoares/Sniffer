@@ -2,11 +2,13 @@ package com.packetsniffer;
 
 import org.pcap4j.core.*;
 import org.pcap4j.util.NifSelector;
+
+import java.io.EOFException;
 import java.io.IOException;
 import com.sun.jna.Platform;
 import org.pcap4j.core.Pcaps;
 import java.util.List;
-
+import java.util.concurrent.TimeoutException;
 
 
 public class Sniffer {

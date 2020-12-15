@@ -19,18 +19,23 @@ DONE ----> Make sniffed packets visible in the GUI (THE PACKETS WILL ONLY APPEAR
 
 DONE ----> To be able to stop during the sniffing, add a button to "end sniff"
 
-----> Be able to resume the thread after pausing it!
-    IDEAS: Destroy the thread on pause and create a new thread on resume
+DONE ----> Be able to resume the thread after pausing it!
+
+----> Change what is shown on the main output
 
 ----> After sniffing, give the user the statistics of the whole process, and possibly the duration of the sniffing
 
-----> Probably make another class for packet sniffing frames
+DONE ----> Probably make another class for packet sniffing frames
 
 ----> Make sniffing window resizable
 
 FEATURES
 
+----> Make every packet clickable to see details about each packet
+
 ----> Let the user be able to choose how much time/packets to handle
+
+----> Let the user choose what he wants to see
 
 ----> While sniffing, print out some statistics
 

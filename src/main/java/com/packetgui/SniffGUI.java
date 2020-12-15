@@ -12,7 +12,8 @@ public class SniffGUI {
 
     private static  final JFrame networkSniffInterfaceFrame = new JFrame("Sniffing!");
     private static final JPanel networkLogPanel = new JPanel(new BorderLayout());
-    private static final JTextArea networkSnifferLog = new JTextArea(10, 40);
+    //private static final JTextArea networkSnifferLog = new JTextArea(10, 40);
+    private static final JTextArea networkSnifferLog = new JTextArea();
 
     private static final JToolBar toolbar = new JToolBar();
 
@@ -99,8 +100,9 @@ public class SniffGUI {
         networkSniffInterfaceFrame.setContentPane(networkLogPanel);
         networkSniffInterfaceFrame.setLocationRelativeTo(null);
         networkSniffInterfaceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        networkSniffInterfaceFrame.pack();
+        networkSniffInterfaceFrame.setSize(500,300);
+        //networkSniffInterfaceFrame.pack();
         networkSniffInterfaceFrame.setVisible(true);
-        networkSniffInterfaceFrame.setResizable(false);
+        networkSniffInterfaceFrame.setResizable(true);
     }
 }

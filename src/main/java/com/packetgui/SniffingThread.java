@@ -74,12 +74,13 @@ public class SniffingThread implements Runnable{
             PcapPacket newPacket = null;
 
             try {
-                newPacket = Sniffer.getAPacket(globalPcapHandler);
+                newPacket = Sniffer.getAPacket(globalPcapHandler); //returns a PcapPacket
             } catch (NotOpenException e) {
                 e.printStackTrace();
             }
 
             if (newPacket != null) {
+
                 networkSnifferLog.append(String.valueOf(newPacket));
             }
 
