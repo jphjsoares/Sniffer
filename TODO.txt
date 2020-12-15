@@ -27,7 +27,7 @@ DONE ----> Be able to resume the thread after pausing it!
 
 DONE ----> Probably make another class for packet sniffing frames
 
-----> Make sniffing window resizable
+DONE ----> Make sniffing window resizable
 
 FEATURES
 
