@@ -34,7 +34,7 @@ public class SniffGUI {
         startSniff.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                thread.start();
+                thread.start(); // Start thread on button click
                 startSniff.setVisible(false);
                 pauseSniff.setVisible(true);
             }
@@ -93,6 +93,8 @@ public class SniffGUI {
         DefaultCaret caret = (DefaultCaret)networkSnifferLog.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
+        networkLogPanel.setBorder(BorderFactory.createEmptyBorder(0, 10,10,10));
+
         networkLogPanel.add(createToolbar(thread, threadOfSniff, handle),BorderLayout.NORTH);
         networkLogPanel.add(scrollSniffPanel, BorderLayout.CENTER);
 
@@ -101,7 +103,6 @@ public class SniffGUI {
         networkSniffInterfaceFrame.setLocationRelativeTo(null);
         networkSniffInterfaceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         networkSniffInterfaceFrame.setSize(500,300);
-        //networkSniffInterfaceFrame.pack();
         networkSniffInterfaceFrame.setVisible(true);
         networkSniffInterfaceFrame.setResizable(true);
     }

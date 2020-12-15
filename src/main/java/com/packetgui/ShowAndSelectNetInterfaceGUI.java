@@ -14,8 +14,8 @@ import java.util.List;
 public class ShowAndSelectNetInterfaceGUI {
 
     private static JFrame networkInterfaceListerFrame = new JFrame("Network Interface Lister");
-    private static JPanel networkListerPanel = new JPanel();
-    private static JTextArea netInterfacesTextList = new JTextArea(10,30);
+    private static JPanel networkListerPanel = new JPanel(new BorderLayout(10,10));
+    private static JTextArea netInterfacesTextList = new JTextArea(15,40);
 
     private static JFrame chooseInterfaceFrame = new JFrame("Choose interface");
     private static JPanel chooseInterfacePanel = new JPanel();
@@ -167,9 +167,11 @@ public class ShowAndSelectNetInterfaceGUI {
         netInterfacesTextList.setEditable(false);
         netInterfacesTextList.setLineWrap(true);
 
+        networkListerPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+
         //Add components to main panel
-        networkListerPanel.add(scroll, BorderLayout.EAST);
-        networkListerPanel.add(addCheckButton(netInterfacesTextList, networkInterfaceListerFrame));
+        networkListerPanel.add(scroll, BorderLayout.CENTER);
+        networkListerPanel.add(addCheckButton(netInterfacesTextList, networkInterfaceListerFrame), BorderLayout.SOUTH);
 
 
         networkInterfaceListerFrame.add(networkListerPanel); //Adds main panel to frame
@@ -177,6 +179,7 @@ public class ShowAndSelectNetInterfaceGUI {
 
         //MainFrame tweaks
         networkInterfaceListerFrame.setResizable(false); //Doesnt let resize window
+        networkInterfaceListerFrame.setContentPane(networkListerPanel);
         networkInterfaceListerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         networkInterfaceListerFrame.pack();
         networkInterfaceListerFrame.setLocationRelativeTo(null);
