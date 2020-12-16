@@ -117,42 +117,30 @@ public class ShowAndSelectNetInterfaceGUI {
         JButton checkInterfaces = new JButton("Check interfaces");
 
         checkInterfaces.addActionListener(new ActionListener() {
-            int numOfClicks = 0;
+
 
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //Resize all windows after button click
-                netInterfaces.setBounds(50,10,500,250);
-                //checkInterfaces.setBounds(250,300,200,40);
-
-
                 try {
                     netsInterfaces = Sniffer.checkInterfacesManual();
-
-                    if (numOfClicks >0) netInterfaces.setText(""); //Clears text after every click
 
                     int interfaceID = 1;
 
                     //Prints out a new line for every interface available
+                    netInterfaces.setText("");
                     for( PcapNetworkInterface netInterface :  netsInterfaces){
-                        netInterfaces.append('\n' + "[" + Integer.toString(interfaceID) + "] " + netInterface.getDescription() + "\nAddress -> " + netInterface.getAddresses().get(0).getAddress() + "\n" );
+                        netInterfaces.append("[" + Integer.toString(interfaceID) + "] " + netInterface.getDescription() + "\nAddress -> " + netInterface.getAddresses().get(0).getAddress() + "\n\n");
                         interfaceID++;
                     }
-                    System.out.println(netsInterfaces.size());
 
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+                    submitInterfaceToSniff();
                 }
 
-                numOfClicks++;
-
-                checkInterfaces.setVisible(false);
-                networkListerPanel.remove(checkInterfaces);
-
-                submitInterfaceToSniff();
+                catch (IOException ioException) {
+                        ioException.printStackTrace();
+                }
             }
-
 
         });
         return checkInterfaces;

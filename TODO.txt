@@ -15,7 +15,6 @@ DONE ----> Create error message
 DONE ----> Call the function to monitor network with user input
 
 DONE ----> Make sniffed packets visible in the GUI (THE PACKETS WILL ONLY APPEAR AFTER THE LOOP IS DONE)
-        We are better off using concurrency here!
 
 DONE ----> To be able to stop during the sniffing, add a button to "end sniff"
 
@@ -29,7 +28,7 @@ DONE ----> Probably make another class for packet sniffing frames
 
 DONE ----> Make sniffing window resizable
 
-----> Kill all threads when end of sniff button is pressed
+DONE ----> Kill all threads when end of sniff button is pressed
 
 
 FEATURES
@@ -38,9 +37,11 @@ FEATURES
 
 ----> After scroll up, continue to scroll down when scroll is put back to the bottom
 
-----> Make every packet clickable to see details about each packet
+----> Make every packet clickable to see details about each packet (open a new frame with all the data that can be printed)
 
 ----> Make app run in the background and use it as a bandwith monitor
+
+----> While sniffing, print out some statistics
 
 ----> Make interfaces clickable
 
@@ -48,9 +49,9 @@ FEATURES
 
 ----> Let the user be able to choose how much time/packets to handle
 
-----> Let the user choose what he wants to see
+----> Convert the final stats bytes, to kb, mb, or gb. Depending on how much bytes there are to print out
 
-----> While sniffing, print out some statistics
+----> Let the user choose what he wants to see
 
 ----> Give the size of all the packets
 

@@ -33,6 +33,7 @@ public class SniffGUI {
         final long[] totalLenght = {0};
         final long[] packetsCaptured = {0};
         final long[] packetsDropped = {0};
+        SniffingThread threadOfSniff = new SniffingThread(handler, networkSnifferLog);
 
 
         //Cant show a button to pause before the thread is being actually executed
@@ -61,9 +62,19 @@ public class SniffGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 statsPanel.setVisible(true);
+                pauseSniff.setVisible(false);
+
+                try {
+                    threadOfSniff.killThread();
+                } catch (PcapNativeException | NotOpenException pcapNativeException) {
+                    pcapNativeException.printStackTrace();
+                }
+
+                networkSnifferLog.append("\n\n\nYour sniffing process finished\nCheck some statistics below!");
                 totalLength.setText(String.valueOf("Total size of packets: " + totalLenght[0] + " bytes\n"));
                 droppedPackets.setText(String.valueOf("Packets dropped: " + packetsDropped[0] + "\n"));
                 capturedPackets.setText(String.valueOf("Packets captured: " + packetsCaptured[0] + "\n"));
+
 
             }
         });
@@ -71,8 +82,6 @@ public class SniffGUI {
         pauseSniff.addActionListener(new ActionListener() {
             boolean isSetToResume = false;
             int timesPaused = 0;
-            PcapHandle handle = handler;
-            SniffingThread threadOfSniff = new SniffingThread(handle, networkSnifferLog);
             long[] statsHandler;
 
             @Override
@@ -88,10 +97,8 @@ public class SniffGUI {
                             packetsCaptured[0] += statsHandler[0];
                             packetsDropped[0] += statsHandler[1];
                             totalLenght[0] += statsHandler[2];
-                        } catch (PcapNativeException pcapNativeException) {
+                        } catch (PcapNativeException | NotOpenException pcapNativeException) {
                             pcapNativeException.printStackTrace();
-                        } catch (NotOpenException notOpenException) {
-                            notOpenException.printStackTrace();
                         }
                     } else {
                         try {
@@ -100,10 +107,8 @@ public class SniffGUI {
                             packetsDropped[0] += statsHandler[1];
                             totalLenght[0] += statsHandler[2];
 
-                        } catch (PcapNativeException pcapNativeException) {
+                        } catch (PcapNativeException | NotOpenException pcapNativeException) {
                             pcapNativeException.printStackTrace();
-                        } catch (NotOpenException notOpenException) {
-                            notOpenException.printStackTrace();
                         }
                     }
                     timesPaused++;
