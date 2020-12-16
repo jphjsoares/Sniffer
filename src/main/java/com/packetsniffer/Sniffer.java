@@ -7,6 +7,8 @@ import java.io.EOFException;
 import java.io.IOException;
 import com.sun.jna.Platform;
 import org.pcap4j.core.Pcaps;
+
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 

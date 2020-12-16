@@ -21,7 +21,7 @@ DONE ----> To be able to stop during the sniffing, add a button to "end sniff"
 
 DONE ----> Be able to resume the thread after pausing it!
 
-----> Change what is shown on the main output
+DONE ----> Change what is shown on the main output
 
 ----> After sniffing, give the user the statistics of the whole process, and possibly the duration of the sniffing
 
@@ -31,7 +31,13 @@ DONE ----> Make sniffing window resizable
 
 FEATURES
 
+----> After scroll up, continue to scroll down when scroll is put back to the bottom
+
 ----> Make every packet clickable to see details about each packet
+
+----> Make app run in the background and use it as a bandwith monitor
+
+----> If being used as bandwith monitor, show most used services
 
 ----> Let the user be able to choose how much time/packets to handle
 

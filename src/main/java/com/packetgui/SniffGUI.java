@@ -18,7 +18,6 @@ public class SniffGUI {
     private static final JToolBar toolbar = new JToolBar();
 
 
-
     private static JToolBar createToolbar(Thread thread, SniffingThread runnable, PcapHandle handler) {
         toolbar.setRollover(true);
         JButton pauseSniff = new JButton("Pause");
