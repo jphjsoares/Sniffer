@@ -30,15 +30,16 @@ public class Sniffer {
 
 
     //How many packets to capture
-    public static void finalStats(PcapHandle handle) throws PcapNativeException, NotOpenException {
+    public static long[] finalStats(PcapHandle handle) throws PcapNativeException, NotOpenException {
         PcapStat ps = handle.getStats();
 
-        System.out.println("ps_recv: " + ps.getNumPacketsCaptured());
-        System.out.println("ps_drop: " + ps.getNumPacketsDropped());
-        System.out.println("ps_ifdrop: " + ps.getNumPacketsDroppedByIf());
-        if (Platform.isWindows()) {
-            System.out.println("bs_capt: " + ps.getNumPacketsCaptured());
-        }
+        long[] stats = new long[3];
+
+        stats[0] = ps.getNumPacketsCaptured();
+        stats[1] = ps.getNumPacketsDropped();
+        stats[2] = 0; //Will be added in the thread
+
+        return stats;
     }
 
     public static List<PcapNetworkInterface> checkInterfacesManual() throws IOException {
