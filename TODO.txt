@@ -33,8 +33,6 @@ DONE ----> Kill all threads when end of sniff button is pressed
 
 FEATURES
 
-----> Hugeeee refactor of all code
-
 ----> After scroll up, continue to scroll down when scroll is put back to the bottom
 
 ----> Make every packet clickable to see details about each packet (open a new frame with all the data that can be printed)
@@ -53,6 +51,8 @@ FEATURES
 
 ----> Let the user choose what he wants to see
 
-----> Give the size of all the packets
+DONE ----> Give the size of all the packets
 
 ----> Use whois to let the user know what IP is being responsible for most of the traffic
+
+----> Hugeeee refactor of all code

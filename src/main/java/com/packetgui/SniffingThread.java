@@ -42,9 +42,7 @@ public class SniffingThread implements Runnable{
                 networkSnifferLog.append(blocksOfPacketInfo[1] + "\n" + "#########################################\n");
 
             }
-
         }
-
         System.out.println("Exiting thread.....");
     }
 

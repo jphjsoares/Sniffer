@@ -6,7 +6,6 @@ import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapNativeException;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,7 +17,7 @@ public class SniffGUI {
     private static final JPanel networkLogPanel = new JPanel(new BorderLayout());
     private static final JTextArea networkSnifferLog = new JTextArea();
     private static final JPanel statsPanel = new JPanel(new BorderLayout());
-    private static final JLabel totalLength = new JLabel();
+    private static final JLabel totalLengthOfPackets = new JLabel();
     private static final JLabel droppedPackets = new JLabel();
     private static final JLabel capturedPackets = new JLabel();
 
@@ -26,13 +25,12 @@ public class SniffGUI {
 
 
     private static JToolBar createToolbar(Thread thread, SniffingThread runnable, PcapHandle handler) {
-        toolbar.setRollover(true);
         JButton pauseSniff = new JButton("Pause");
         JButton startSniff = new JButton("Start sniffing");
         JButton endSniff = new JButton("End sniffing");
-        final long[] totalLenght = {0};
-        final long[] packetsCaptured = {0};
-        final long[] packetsDropped = {0};
+        final long[] stats = new long[3];
+
+
         SniffingThread threadOfSniff = new SniffingThread(handler, networkSnifferLog);
 
 
@@ -57,24 +55,21 @@ public class SniffGUI {
 
 
         //Button was pressed to end sniffing
-        //TODO: Add functionality (kill thread that is running) and show the final stats
         endSniff.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 statsPanel.setVisible(true);
                 pauseSniff.setVisible(false);
-
+                endSniff.setVisible(false);
                 try {
                     threadOfSniff.killThread();
-                } catch (PcapNativeException | NotOpenException pcapNativeException) {
-                    pcapNativeException.printStackTrace();
                 }
+                catch (PcapNativeException | NotOpenException pcapNativeException) { pcapNativeException.printStackTrace(); }
 
-                networkSnifferLog.append("\n\n\nYour sniffing process finished\nCheck some statistics below!");
-                totalLength.setText(String.valueOf("Total size of packets: " + totalLenght[0] + " bytes\n"));
-                droppedPackets.setText(String.valueOf("Packets dropped: " + packetsDropped[0] + "\n"));
-                capturedPackets.setText(String.valueOf("Packets captured: " + packetsCaptured[0] + "\n"));
-
+                networkSnifferLog.append("\n\n\nYour sniffing process finished\nCheck some statistics below!\n\t\tGoodbye :)");
+                totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + stats[2] + " bytes\n"));
+                droppedPackets.setText(String.valueOf("Packets dropped: " + stats[1] + "\n"));
+                capturedPackets.setText(String.valueOf("Packets captured: " + stats[0] + "\n"));
 
             }
         });
@@ -91,28 +86,33 @@ public class SniffGUI {
                 if(!isSetToResume) {
                     isSetToResume = true;
                     pauseSniff.setText("Resume");
+
                     if (timesPaused > 0) {
+
                         try {
                             statsHandler = threadOfSniff.killThread();
-                            packetsCaptured[0] += statsHandler[0];
-                            packetsDropped[0] += statsHandler[1];
-                            totalLenght[0] += statsHandler[2];
-                        } catch (PcapNativeException | NotOpenException pcapNativeException) {
-                            pcapNativeException.printStackTrace();
                         }
+                        catch (PcapNativeException | NotOpenException pcapNativeException) { pcapNativeException.printStackTrace(); }
+
+                        //Add the acquired stats to the final stats array (stats are only being given at the end ATM)
+                        stats[0] += statsHandler[0];
+                        stats[1] += statsHandler[1];
+                        stats[2] += statsHandler[2];
+
                     } else {
+
                         try {
                             statsHandler = runnable.killThread(); // Works the first time pause is pressed
-                            packetsCaptured[0] += statsHandler[0];
-                            packetsDropped[0] += statsHandler[1];
-                            totalLenght[0] += statsHandler[2];
-
-                        } catch (PcapNativeException | NotOpenException pcapNativeException) {
-                            pcapNativeException.printStackTrace();
                         }
+                        catch (PcapNativeException | NotOpenException pcapNativeException) { pcapNativeException.printStackTrace(); }
+
+                        //Add the acquired stats to the final stats array (stats are only being given at the end ATM)
+                        stats[0] += statsHandler[0];
+                        stats[1] += statsHandler[1];
+                        stats[2] += statsHandler[2];
+
                     }
                     timesPaused++;
-
                 }
 
                 //Button was pressed to resume
@@ -138,7 +138,7 @@ public class SniffGUI {
         JScrollPane scrollSniffPanel = new JScrollPane(networkSnifferLog);
 
         statsPanel.setLayout(new FlowLayout());
-        statsPanel.add(totalLength);
+        statsPanel.add(totalLengthOfPackets);
         statsPanel.add(droppedPackets);
         statsPanel.add(capturedPackets);
         statsPanel.setVisible(false);
