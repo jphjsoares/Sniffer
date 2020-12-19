@@ -161,9 +161,7 @@ public class ShowAndSelectNetInterfaceGUI {
         networkListerPanel.add(scroll, BorderLayout.CENTER);
         networkListerPanel.add(addCheckButton(netInterfacesTextList, networkInterfaceListerFrame), BorderLayout.SOUTH);
 
-
         networkInterfaceListerFrame.add(networkListerPanel); //Adds main panel to frame
-
 
         //MainFrame tweaks
         networkInterfaceListerFrame.setResizable(false); //Doesnt let resize window

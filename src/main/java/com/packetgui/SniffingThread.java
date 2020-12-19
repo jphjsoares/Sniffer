@@ -40,9 +40,11 @@ public class SniffingThread implements Runnable{
                 //Index 1 shows the user the ethernet header
                 totalLength += newPacket.length();
                 networkSnifferLog.append(blocksOfPacketInfo[1] + "\n" + "#########################################\n");
+                networkSnifferLog.setCaretPosition(networkSnifferLog.getDocument().getLength());
 
             }
         }
+
         System.out.println("Exiting thread.....");
     }
 
