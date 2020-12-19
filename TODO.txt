@@ -33,7 +33,9 @@ DONE ----> Kill all threads when end of sniff button is pressed
 
 FEATURES
 
-----> After scroll up, continue to scroll down when scroll is put back to the bottom
+DONE ----> After scroll up, continue to scroll down when scroll is put back to the bottom
+
+----> Also kill first thread on End sniff button pressed
 
 ----> Make every packet clickable to see details about each packet (open a new frame with all the data that can be printed)
 
@@ -47,7 +49,7 @@ FEATURES
 
 ----> Let the user be able to choose how much time/packets to handle
 
-----> Convert the final stats bytes, to kb, mb, or gb. Depending on how much bytes there are to print out
+DONE ----> Convert the final stats bytes, to kb, mb, or gb. Depending on how much bytes there are to print out
 
 ----> Let the user choose what he wants to see
 

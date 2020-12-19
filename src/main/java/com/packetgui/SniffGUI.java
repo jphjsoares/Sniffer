@@ -67,7 +67,20 @@ public class SniffGUI {
                 catch (PcapNativeException | NotOpenException pcapNativeException) { pcapNativeException.printStackTrace(); }
 
                 networkSnifferLog.append("\n\n\nYour sniffing process finished\nCheck some statistics below!\n\t\tGoodbye :)");
-                totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + stats[2] + " bytes\n"));
+
+
+                if (stats[2] < 1024) {
+                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + stats[2] + " bytes\n"));
+                }
+                if(stats[2] > 1024) {
+                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + stats[2] / 1024 + " Kbytes\n"));
+                }
+                if (stats[2] > 1048576) {
+                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + stats[2] / 1048576 + " Mbytes\n"));
+                }
+                if (stats[2] > 1073741824 ) {
+                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + stats[2] / 1073741824 + " Gbytes\n"));
+                }
                 droppedPackets.setText(String.valueOf("Packets dropped: " + stats[1] + "\n"));
                 capturedPackets.setText(String.valueOf("Packets captured: " + stats[0] + "\n"));
 
