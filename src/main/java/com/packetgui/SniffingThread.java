@@ -13,7 +13,7 @@ public class SniffingThread implements Runnable{
     private volatile boolean keepSniffing = true;
     PcapHandle globalPcapHandler;
     JTextArea networkSnifferLog;
-    long totalLength = 0;
+    double totalLength = 0;
 
 
     SniffingThread(PcapHandle globalPcapHandler, JTextArea networkSnifferLog) {
@@ -48,8 +48,8 @@ public class SniffingThread implements Runnable{
         System.out.println("Exiting thread.....");
     }
 
-    public long[] killThread() throws PcapNativeException, NotOpenException {
-        long[] stats = Sniffer.finalStats(globalPcapHandler);
+    public double[] killThread() throws PcapNativeException, NotOpenException {
+        double[] stats = Sniffer.finalStats(globalPcapHandler);
         stats[2] = totalLength;
         keepSniffing = false;
         return stats;

@@ -10,6 +10,7 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 public class SniffGUI {
 
@@ -20,7 +21,6 @@ public class SniffGUI {
     private static final JLabel totalLengthOfPackets = new JLabel();
     private static final JLabel droppedPackets = new JLabel();
     private static final JLabel capturedPackets = new JLabel();
-
     private static final JToolBar toolbar = new JToolBar();
 
 
@@ -28,7 +28,8 @@ public class SniffGUI {
         JButton pauseSniff = new JButton("Pause");
         JButton startSniff = new JButton("Start sniffing");
         JButton endSniff = new JButton("End sniffing");
-        final long[] stats = new long[3];
+        final double[] stats = new double[3];
+        final long[] timesPausedGlobalHandle = {0};
 
 
         SniffingThread threadOfSniff = new SniffingThread(handler, networkSnifferLog);
@@ -56,33 +57,49 @@ public class SniffGUI {
 
         //Button was pressed to end sniffing
         endSniff.addActionListener(new ActionListener() {
+            double[] statsHandler;
             @Override
             public void actionPerformed(ActionEvent e) {
                 statsPanel.setVisible(true);
                 pauseSniff.setVisible(false);
                 endSniff.setVisible(false);
-                try {
-                    threadOfSniff.killThread();
+
+                //This makes updates the stats if no pause is given during the sniff before pressing end sniff
+                if(timesPausedGlobalHandle[0] == 0) {
+                    try {
+                        statsHandler = runnable.killThread();
+                        stats[0] += statsHandler[0];
+                        stats[1] += statsHandler[1];
+                        stats[2] += statsHandler[2];
+                    } catch (PcapNativeException | NotOpenException pcapNativeException) { pcapNativeException.printStackTrace(); }
+                } else {
+                    try {
+                        statsHandler = threadOfSniff.killThread();
+                        stats[0] += statsHandler[0];
+                        stats[1] += statsHandler[1];
+                        stats[2] += statsHandler[2];
+                    } catch (PcapNativeException | NotOpenException pcapNativeException) { pcapNativeException.printStackTrace(); }
                 }
-                catch (PcapNativeException | NotOpenException pcapNativeException) { pcapNativeException.printStackTrace(); }
 
                 networkSnifferLog.append("\n\n\nYour sniffing process finished\nCheck some statistics below!\n\t\tGoodbye :)");
 
+                DecimalFormat df = new DecimalFormat("#####.###");
 
+                //Bytes conversion into mbytes, kbytes and gbytes
                 if (stats[2] < 1024) {
-                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + stats[2] + " bytes\n"));
+                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + df.format(stats[2]) + " bytes\n"));
                 }
                 if(stats[2] > 1024) {
-                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + stats[2] / 1024 + " Kbytes\n"));
+                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + df.format(stats[2] / 1024) + " Kbytes\n"));
                 }
                 if (stats[2] > 1048576) {
-                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + stats[2] / 1048576 + " Mbytes\n"));
+                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + df.format(stats[2] / 1048576) + " Mbytes\n"));
                 }
                 if (stats[2] > 1073741824 ) {
-                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + stats[2] / 1073741824 + " Gbytes\n"));
+                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + df.format(stats[2] / 1073741824) + " Gbytes\n"));
                 }
-                droppedPackets.setText(String.valueOf("Packets dropped: " + stats[1] + "\n"));
-                capturedPackets.setText(String.valueOf("Packets captured: " + stats[0] + "\n"));
+                droppedPackets.setText(String.valueOf("Packets dropped: " + (long)stats[1] + "\n"));
+                capturedPackets.setText(String.valueOf("Packets captured: " + (long)stats[0] + "\n"));
 
             }
         });
@@ -90,7 +107,7 @@ public class SniffGUI {
         pauseSniff.addActionListener(new ActionListener() {
             boolean isSetToResume = false;
             int timesPaused = 0;
-            long[] statsHandler;
+            double[] statsHandler;
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -126,6 +143,7 @@ public class SniffGUI {
 
                     }
                     timesPaused++;
+                    timesPausedGlobalHandle[0] = timesPaused;
                 }
 
                 //Button was pressed to resume

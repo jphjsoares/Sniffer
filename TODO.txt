@@ -35,7 +35,7 @@ FEATURES
 
 DONE ----> After scroll up, continue to scroll down when scroll is put back to the bottom
 
-----> Also kill first thread on End sniff button pressed
+DONE ----> Also kill first thread on End sniff button pressed
 
 ----> Make every packet clickable to see details about each packet (open a new frame with all the data that can be printed)
 

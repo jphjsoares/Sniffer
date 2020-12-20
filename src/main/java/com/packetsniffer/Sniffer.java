@@ -30,10 +30,10 @@ public class Sniffer {
 
 
     //How many packets to capture
-    public static long[] finalStats(PcapHandle handle) throws PcapNativeException, NotOpenException {
+    public static double[] finalStats(PcapHandle handle) throws PcapNativeException, NotOpenException {
         PcapStat ps = handle.getStats();
 
-        long[] stats = new long[3];
+        double[] stats = new double[3];
 
         stats[0] = ps.getNumPacketsCaptured();
         stats[1] = ps.getNumPacketsDropped();
