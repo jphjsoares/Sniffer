@@ -10,6 +10,8 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
 public class SniffGUI {
@@ -28,6 +30,7 @@ public class SniffGUI {
         JButton pauseSniff = new JButton("Pause");
         JButton startSniff = new JButton("Start sniffing");
         JButton endSniff = new JButton("End sniffing");
+        JButton runInBackground = new JButton("Run in the background");
         final double[] stats = new double[3];
         final long[] timesPausedGlobalHandle = {0};
 
@@ -37,11 +40,70 @@ public class SniffGUI {
 
         //Cant show a button to pause before the thread is being actually executed
         pauseSniff.setVisible(false);
+        runInBackground.setVisible(false);
         endSniff.setVisible(false);
+
 
         toolbar.add(startSniff);
         toolbar.add(pauseSniff);
         toolbar.add(endSniff);
+        toolbar.add(runInBackground);
+
+
+
+        runInBackground.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (SystemTray.isSupported()) {
+
+                    MenuItem showFrame = new MenuItem("Show interface");
+                    MenuItem pauseSniff = new MenuItem("Pause");
+                    MenuItem exitItem = new MenuItem("Exit");
+                    final PopupMenu popup = new PopupMenu();
+
+                    networkSniffInterfaceFrame.setVisible(false);
+
+                    TrayIcon trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().getImage("res/lock.png")); //Add here the icon of the app
+                    trayIcon.setToolTip("Sniffing packets...");
+
+                    popup.add(showFrame);
+                    popup.add(pauseSniff);
+                    popup.add(exitItem);
+                    trayIcon.setPopupMenu(popup);
+
+                    showFrame.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            networkSniffInterfaceFrame.setVisible(true);
+                        }
+                    });
+
+                    pauseSniff.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //TODO: Click pause button
+                        }
+                    });
+
+                    exitItem.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //TODO: Click end sniff button
+                        }
+                    });
+
+                    try {
+                        SystemTray.getSystemTray().add(trayIcon);
+                    } catch (Exception err) {
+                        System.out.println(err);
+                    }
+
+                } else {
+                    //TODO: Display error message
+                }
+
+            }
+        });
 
         //Start the whole process after the button to start is pressed
         startSniff.addActionListener(new ActionListener() {
@@ -51,9 +113,9 @@ public class SniffGUI {
                 startSniff.setVisible(false);
                 pauseSniff.setVisible(true);
                 endSniff.setVisible(true);
+                runInBackground.setVisible(true);
             }
         });
-
 
         //Button was pressed to end sniffing
         endSniff.addActionListener(new ActionListener() {
