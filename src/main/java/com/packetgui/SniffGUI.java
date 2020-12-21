@@ -6,6 +6,7 @@ import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapNativeException;
 
 import javax.swing.*;
+import javax.swing.AbstractButton;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -57,38 +58,45 @@ public class SniffGUI {
                 if (SystemTray.isSupported()) {
 
                     MenuItem showFrame = new MenuItem("Show interface");
-                    MenuItem pauseSniff = new MenuItem("Pause");
+                    MenuItem pauseSysTray = new MenuItem("Pause");
                     MenuItem exitItem = new MenuItem("Exit");
                     final PopupMenu popup = new PopupMenu();
 
                     networkSniffInterfaceFrame.setVisible(false);
-
+                    //TODO: Get an image for the system tray icon
                     TrayIcon trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().getImage("res/lock.png")); //Add here the icon of the app
                     trayIcon.setToolTip("Sniffing packets...");
 
                     popup.add(showFrame);
-                    popup.add(pauseSniff);
+                    popup.add(pauseSysTray);
                     popup.add(exitItem);
                     trayIcon.setPopupMenu(popup);
 
                     showFrame.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            SystemTray.getSystemTray().remove(trayIcon);
                             networkSniffInterfaceFrame.setVisible(true);
                         }
                     });
 
-                    pauseSniff.addActionListener(new ActionListener() {
+                    pauseSysTray.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            //TODO: Click pause button
+                            pauseSniff.doClick();
+                            if(pauseSysTray.getLabel() == "Pause") {
+                                pauseSysTray.setLabel("Resume");
+                            } else {
+                                pauseSysTray.setLabel("Pause");
+                            }
                         }
                     });
 
                     exitItem.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            //TODO: Click end sniff button
+                            networkSniffInterfaceFrame.setVisible(true);
+                            endSniff.doClick();
                         }
                     });
 
@@ -99,13 +107,17 @@ public class SniffGUI {
                     }
 
                 } else {
-                    //TODO: Display error message
+                    JOptionPane.showMessageDialog(networkSnifferLog,
+                            "Looks like your operating system does not have a system tray. Can't run app in background",
+                            "System tray Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
 
             }
         });
 
         //Start the whole process after the button to start is pressed
+        // Start thread on button click
         startSniff.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
