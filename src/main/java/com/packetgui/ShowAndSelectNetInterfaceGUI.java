@@ -4,7 +4,6 @@ import com.packetsniffer.Sniffer;
 import org.pcap4j.core.*;
 
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,12 +12,11 @@ import java.util.List;
 
 public class ShowAndSelectNetInterfaceGUI {
 
-    private static JFrame networkInterfaceListerFrame = new JFrame("Network Interface Lister");
-    private static JPanel networkListerPanel = new JPanel(new BorderLayout(10,10));
-    private static JTextArea netInterfacesTextList = new JTextArea(15,40);
+    private static final JFrame networkInterfaceListerFrame = new JFrame("Network Interface Lister");
+    private static final JPanel networkListerPanel = new JPanel(new BorderLayout(10,10));
+    private static final JTextArea netInterfacesTextList = new JTextArea(15,40);
 
-    private static JFrame chooseInterfaceFrame = new JFrame("Choose interface");
-    private static JPanel chooseInterfacePanel = new JPanel();
+    private static final JFrame chooseInterfaceFrame = new JFrame("Choose interface");
     public static final ImageIcon icon = new ImageIcon("src/main/resources/icon.png");
 
     private static List<PcapNetworkInterface> netsInterfaces;
@@ -42,9 +40,7 @@ public class ShowAndSelectNetInterfaceGUI {
         }
 
         //Check if its a number larger than the network interfaces available
-        if(inputAsNumber <= Sniffer.checkInterfacesManual().size() && inputAsNumber > 0 ) return true;
-
-        return false;
+        return inputAsNumber <= Sniffer.checkInterfacesManual().size() && inputAsNumber > 0;
     }
 
     private static void submitInterfaceToSniff() {
@@ -113,7 +109,7 @@ public class ShowAndSelectNetInterfaceGUI {
 
     }
 
-    private static JButton addCheckButton(JTextArea netInterfaces, JFrame frame) {
+    private static JButton addCheckButton(JTextArea netInterfaces) {
 
         JButton checkInterfaces = new JButton("Check interfaces");
 
@@ -131,7 +127,7 @@ public class ShowAndSelectNetInterfaceGUI {
                     //Prints out a new line for every interface available
                     netInterfaces.setText("");
                     for( PcapNetworkInterface netInterface :  netsInterfaces){
-                        netInterfaces.append("[" + Integer.toString(interfaceID) + "] " + netInterface.getDescription() + "\nAddress -> " + netInterface.getAddresses().get(0).getAddress() + "\n\n");
+                        netInterfaces.append("[" + interfaceID + "] " + netInterface.getDescription() + "\nAddress -> " + netInterface.getAddresses().get(0).getAddress() + "\n\n");
                         interfaceID++;
                     }
 
@@ -142,8 +138,8 @@ public class ShowAndSelectNetInterfaceGUI {
                         ioException.printStackTrace();
                 }
             }
-
         });
+
         return checkInterfaces;
     }
 
@@ -160,7 +156,7 @@ public class ShowAndSelectNetInterfaceGUI {
 
         //Add components to main panel
         networkListerPanel.add(scroll, BorderLayout.CENTER);
-        networkListerPanel.add(addCheckButton(netInterfacesTextList, networkInterfaceListerFrame), BorderLayout.SOUTH);
+        networkListerPanel.add(addCheckButton(netInterfacesTextList), BorderLayout.SOUTH);
 
         networkInterfaceListerFrame.add(networkListerPanel); //Adds main panel to frame
 

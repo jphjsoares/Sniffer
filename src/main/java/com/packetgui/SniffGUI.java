@@ -6,13 +6,10 @@ import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapNativeException;
 
 import javax.swing.*;
-import javax.swing.AbstractButton;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
 public class SniffGUI {
@@ -62,8 +59,8 @@ public class SniffGUI {
                     final PopupMenu popup = new PopupMenu();
 
                     networkSniffInterfaceFrame.setVisible(false);
-                    //TODO: Get an image for the system tray icon
                     TrayIcon trayIcon = new TrayIcon(ShowAndSelectNetInterfaceGUI.icon.getImage()); //Add here the icon of the app
+                    trayIcon.setImageAutoSize(true);
                     trayIcon.setToolTip("Sniffing packets...");
 
                     popup.add(showFrame);
@@ -83,7 +80,7 @@ public class SniffGUI {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             pauseSniff.doClick();
-                            if(pauseSysTray.getLabel() == "Pause") {
+                            if(pauseSysTray.getLabel().equals("Pause")) {
                                 pauseSysTray.setLabel("Resume");
                             } else {
                                 pauseSysTray.setLabel("Pause");
@@ -162,19 +159,19 @@ public class SniffGUI {
 
                 //Bytes conversion into mbytes, kbytes and gbytes
                 if (stats[2] < 1024) {
-                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + df.format(stats[2]) + " bytes\n"));
+                    totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2]) + " bytes\n");
                 }
                 if(stats[2] > 1024) {
-                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + df.format(stats[2] / 1024) + " Kbytes\n"));
+                    totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2] / 1024) + " Kbytes\n");
                 }
                 if (stats[2] > 1048576) {
-                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + df.format(stats[2] / 1048576) + " Mbytes\n"));
+                    totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2] / 1048576) + " Mbytes\n");
                 }
                 if (stats[2] > 1073741824 ) {
-                    totalLengthOfPackets.setText(String.valueOf("Total size of packets: " + df.format(stats[2] / 1073741824) + " Gbytes\n"));
+                    totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2] / 1073741824) + " Gbytes\n");
                 }
-                droppedPackets.setText(String.valueOf("Packets dropped: " + (long)stats[1] + "\n"));
-                capturedPackets.setText(String.valueOf("Packets captured: " + (long)stats[0] + "\n"));
+                droppedPackets.setText("Packets dropped: " + (long) stats[1] + "\n");
+                capturedPackets.setText("Packets captured: " + (long) stats[0] + "\n");
 
             }
         });
