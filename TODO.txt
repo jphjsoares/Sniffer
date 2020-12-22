@@ -43,7 +43,7 @@ DONE ----> Make app run in the background and use it as a bandwith monitor (prog
 
 DONE ----> Add a new icon to the program and don't forget to use it in the sys tray when running in the background
 
-----> Possibly make another class for the toolbar
+DONE ----> Possibly make another class for the toolbar
 
 ----> Make end message a popup instead of writing it out (possibly stats too)
 
