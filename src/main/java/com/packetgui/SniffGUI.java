@@ -51,7 +51,6 @@ public class SniffGUI {
         toolbar.add(runInBackground);
 
 
-
         runInBackground.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,7 +63,7 @@ public class SniffGUI {
 
                     networkSniffInterfaceFrame.setVisible(false);
                     //TODO: Get an image for the system tray icon
-                    TrayIcon trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().getImage("res/lock.png")); //Add here the icon of the app
+                    TrayIcon trayIcon = new TrayIcon(ShowAndSelectNetInterfaceGUI.icon.getImage()); //Add here the icon of the app
                     trayIcon.setToolTip("Sniffing packets...");
 
                     popup.add(showFrame);
@@ -95,6 +94,7 @@ public class SniffGUI {
                     exitItem.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+                            SystemTray.getSystemTray().remove(trayIcon);
                             networkSniffInterfaceFrame.setVisible(true);
                             endSniff.doClick();
                         }
@@ -137,6 +137,7 @@ public class SniffGUI {
                 statsPanel.setVisible(true);
                 pauseSniff.setVisible(false);
                 endSniff.setVisible(false);
+                runInBackground.setVisible(false);
 
                 //This makes updates the stats if no pause is given during the sniff before pressing end sniff
                 if(timesPausedGlobalHandle[0] == 0) {
@@ -263,7 +264,7 @@ public class SniffGUI {
         networkLogPanel.add(createToolbar(thread, threadOfSniff, handle),BorderLayout.NORTH);
         networkLogPanel.add(scrollSniffPanel, BorderLayout.CENTER);
 
-
+        networkSniffInterfaceFrame.setIconImage(ShowAndSelectNetInterfaceGUI.icon.getImage());
         networkSniffInterfaceFrame.setContentPane(networkLogPanel);
         networkSniffInterfaceFrame.setLocationRelativeTo(null);
         networkSniffInterfaceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

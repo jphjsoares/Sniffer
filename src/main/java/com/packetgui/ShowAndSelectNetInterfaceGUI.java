@@ -19,6 +19,7 @@ public class ShowAndSelectNetInterfaceGUI {
 
     private static JFrame chooseInterfaceFrame = new JFrame("Choose interface");
     private static JPanel chooseInterfacePanel = new JPanel();
+    public static final ImageIcon icon = new ImageIcon("src/main/resources/icon.png");
 
     private static List<PcapNetworkInterface> netsInterfaces;
 
@@ -164,6 +165,9 @@ public class ShowAndSelectNetInterfaceGUI {
         networkInterfaceListerFrame.add(networkListerPanel); //Adds main panel to frame
 
         //MainFrame tweaks
+
+        networkInterfaceListerFrame.setIconImage(icon.getImage());
+        chooseInterfaceFrame.setIconImage(icon.getImage());
         networkInterfaceListerFrame.setResizable(false); //Doesnt let resize window
         networkInterfaceListerFrame.setContentPane(networkListerPanel);
         networkInterfaceListerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
