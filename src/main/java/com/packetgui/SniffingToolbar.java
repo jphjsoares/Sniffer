@@ -144,7 +144,7 @@ public class SniffingToolbar {
                     } catch (PcapNativeException | NotOpenException pcapNativeException) { pcapNativeException.printStackTrace(); }
                 }
 
-                SniffGUI.networkSnifferLog.append("\n\n\nYour sniffing process finished\nCheck some statistics below!\n\t\tGoodbye :)");
+                JOptionPane.showMessageDialog(SniffGUI.networkSniffInterfaceFrame, "Your sniffing process finished\nCheck some statistics below!\nGoodbye :)");
 
                 DecimalFormat df = new DecimalFormat("#####.##");
 

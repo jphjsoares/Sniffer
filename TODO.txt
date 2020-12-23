@@ -45,7 +45,7 @@ DONE ----> Add a new icon to the program and don't forget to use it in the sys t
 
 DONE ----> Possibly make another class for the toolbar
 
-----> Make end message a popup instead of writing it out (possibly stats too)
+DONE ----> Make end message a popup instead of writing it out (possibly stats too)
 
 ----> While sniffing, print out some statistics (Possibly more concurrency, which means, thread work)
 
