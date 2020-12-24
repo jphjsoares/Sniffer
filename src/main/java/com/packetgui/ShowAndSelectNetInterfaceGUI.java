@@ -4,10 +4,12 @@ import com.packetsniffer.Sniffer;
 import org.pcap4j.core.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShowAndSelectNetInterfaceGUI {
@@ -15,6 +17,9 @@ public class ShowAndSelectNetInterfaceGUI {
     private static final JFrame networkInterfaceListerFrame = new JFrame("Network Interface Lister");
     private static final JPanel networkListerPanel = new JPanel(new BorderLayout(10,10));
     private static final JTextArea netInterfacesTextList = new JTextArea(15,40);
+
+
+
 
     private static final JFrame chooseInterfaceFrame = new JFrame("Choose interface");
     public static final ImageIcon icon = new ImageIcon("src/main/resources/icon.png");
@@ -124,14 +129,27 @@ public class ShowAndSelectNetInterfaceGUI {
 
                     int interfaceID = 1;
 
-                    //Prints out a new line for every interface available
-                    netInterfaces.setText("");
-                    for( PcapNetworkInterface netInterface :  netsInterfaces){
-                        netInterfaces.append("[" + interfaceID + "] " + netInterface.getDescription() + "\nAddress -> " + netInterface.getAddresses().get(0).getAddress() + "\n\n");
-                        interfaceID++;
-                    }
+                    JList list = new JList(netsInterfaces.toArray());
+                    list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+                    list.setLayoutOrientation(JList.VERTICAL);
+                    list.setVisibleRowCount(-1);
+                    JScrollPane listScroller = new JScrollPane(list);
+                    listScroller.setPreferredSize(new Dimension(250, 80));
 
-                    submitInterfaceToSniff();
+                    networkListerPanel.add(listScroller, BorderLayout.EAST);
+
+
+                    //Prints out a new line for every interface available
+                    //netInterfaces.setText("");
+                    /*
+                    for( PcapNetworkInterface netInt :  netsInterfaces){
+
+                        //netInterfaces.append("[" + interfaceID + "] " + netInterface.getDescription() + "\nAddress -> " + netInterface.getAddresses().get(0).getAddress() + "\n\n");
+                        interfaceID++;
+                    }*/
+
+
+                    //submitInterfaceToSniff();
                 }
 
                 catch (IOException ioException) {
@@ -155,16 +173,16 @@ public class ShowAndSelectNetInterfaceGUI {
         networkListerPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
         //Add components to main panel
-        networkListerPanel.add(scroll, BorderLayout.CENTER);
+        //networkListerPanel.add(scroll, BorderLayout.CENTER);
+
         networkListerPanel.add(addCheckButton(netInterfacesTextList), BorderLayout.SOUTH);
 
         networkInterfaceListerFrame.add(networkListerPanel); //Adds main panel to frame
 
         //MainFrame tweaks
-
         networkInterfaceListerFrame.setIconImage(icon.getImage());
         chooseInterfaceFrame.setIconImage(icon.getImage());
-        networkInterfaceListerFrame.setResizable(false); //Doesnt let resize window
+        networkInterfaceListerFrame.setResizable(true); //Doesnt let resize window
         networkInterfaceListerFrame.setContentPane(networkListerPanel);
         networkInterfaceListerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         networkInterfaceListerFrame.pack();
