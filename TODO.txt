@@ -50,7 +50,7 @@ DONE ----> Make end message a popup instead of writing it out (possibly stats to
 
 ----> While sniffing, print out some statistics (Possibly more concurrency, which means, thread work)
 
-----> Make interfaces clickable
+DONE ----> Make interfaces clickable
 
 ----> If being used as bandwith monitor, show most used services
 
