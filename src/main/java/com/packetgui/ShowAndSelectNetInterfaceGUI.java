@@ -15,11 +15,11 @@ import java.util.List;
 public class ShowAndSelectNetInterfaceGUI {
 
     private static final JFrame networkInterfaceListerFrame = new JFrame("Network Interface Lister");
-    private static final JPanel networkListerPanel = new JPanel(new BorderLayout(10,10));
+    //private static final JPanel networkListerPanel = new JPanel(new BorderLayout(10,10));
+    //private static final JPanel contentPanelWithList = new JPanel(new BorderLayout(10,10));
+    private static final JPanel networkListerPanel = new JPanel(new BorderLayout());
+    private static final JPanel contentPanelWithList = new JPanel();
     private static final JTextArea netInterfacesTextList = new JTextArea(15,40);
-
-
-
 
     private static final JFrame chooseInterfaceFrame = new JFrame("Choose interface");
     public static final ImageIcon icon = new ImageIcon("src/main/resources/icon.png");
@@ -66,7 +66,6 @@ public class ShowAndSelectNetInterfaceGUI {
         chooseInterfaceFrame.setSize(300,200);
         chooseInterfaceFrame.setLocationRelativeTo(networkInterfaceListerFrame);
         chooseInterfaceFrame.setResizable(false);
-        chooseInterfaceFrame.setLayout(null);
         chooseInterfaceFrame.setVisible(true);
 
         submitButton.addActionListener(new ActionListener() {
@@ -127,17 +126,28 @@ public class ShowAndSelectNetInterfaceGUI {
                 try {
                     netsInterfaces = Sniffer.checkInterfacesManual();
 
+                    JFrame testFrame = new JFrame();
+
                     int interfaceID = 1;
 
-                    JList list = new JList(netsInterfaces.toArray());
-                    list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-                    list.setLayoutOrientation(JList.VERTICAL);
-                    list.setVisibleRowCount(-1);
-                    JScrollPane listScroller = new JScrollPane(list);
-                    listScroller.setPreferredSize(new Dimension(250, 80));
+                    final DefaultListModel fruitsName = new DefaultListModel();
 
-                    networkListerPanel.add(listScroller, BorderLayout.EAST);
+                    for( PcapNetworkInterface netInt :  netsInterfaces){
+                        fruitsName.addElement("[" + interfaceID + "] " + netInt.getDescription() + "Address -> " + netInt.getAddresses().get(0).getAddress());
+                        interfaceID++;
+                    }
 
+                    final JList fruitList = new JList(fruitsName);
+                    fruitList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                    fruitList.setSelectedIndex(0);
+                    fruitList.setVisibleRowCount(3);
+
+                    JScrollPane fruitListScrollPane = new JScrollPane(fruitList);
+
+                    networkListerPanel.add(fruitListScrollPane, BorderLayout.CENTER);
+                    checkInterfaces.setVisible(false);
+
+                    networkInterfaceListerFrame.pack();
 
                     //Prints out a new line for every interface available
                     //netInterfaces.setText("");
@@ -163,8 +173,7 @@ public class ShowAndSelectNetInterfaceGUI {
 
     private static void createAndShowNetInterfaceLister() {
         //Components initialize
-
-        JScrollPane scroll = new JScrollPane (netInterfacesTextList); //Adds a scroll to textArea
+        JScrollPane scroll = new JScrollPane(netInterfacesTextList); //Adds a scroll to textArea
 
         //Text area edits
         netInterfacesTextList.setEditable(false);
@@ -178,16 +187,18 @@ public class ShowAndSelectNetInterfaceGUI {
         networkListerPanel.add(addCheckButton(netInterfacesTextList), BorderLayout.SOUTH);
 
         networkInterfaceListerFrame.add(networkListerPanel); //Adds main panel to frame
-
+        networkInterfaceListerFrame.add(contentPanelWithList);
+        //topLevelContainer.setContentPane(contentPane);
+        networkInterfaceListerFrame.setContentPane(networkListerPanel);
         //MainFrame tweaks
         networkInterfaceListerFrame.setIconImage(icon.getImage());
         chooseInterfaceFrame.setIconImage(icon.getImage());
+
         networkInterfaceListerFrame.setResizable(true); //Doesnt let resize window
         networkInterfaceListerFrame.setContentPane(networkListerPanel);
         networkInterfaceListerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         networkInterfaceListerFrame.pack();
         networkInterfaceListerFrame.setLocationRelativeTo(null);
-        networkInterfaceListerFrame.setLayout(null);
         networkInterfaceListerFrame.setVisible(true);
     }
 
