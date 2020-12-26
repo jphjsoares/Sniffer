@@ -38,6 +38,7 @@ DONE ----> After scroll up, continue to scroll down when scroll is put back to t
 DONE ----> Also kill first thread on End sniff button pressed
 
 ----> Make every packet clickable to see details about each packet (open a new frame with all the data that can be printed)
+        And in the system tray icon show the length of the bytes
 
 DONE ----> Make app run in the background and use it as a bandwith monitor (program running in the system tray)
 
@@ -49,7 +50,7 @@ DONE ----> Make end message a popup instead of writing it out (possibly stats to
 
 ----> While sniffing, print out some statistics (Possibly more concurrency, which means, thread work)
 
-----> Make interfaces clickable
+DONE ----> Make interfaces clickable
 
 ----> If being used as bandwith monitor, show most used services
 
