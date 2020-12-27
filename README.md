@@ -5,6 +5,7 @@ This small program was made with the intention to deepen my following skills:
   - Java core langauge
   - Java swing GUI
   - Packet and network sniffing
+  - Java concurrency
 
 I will add new features once in a while. Although this wasn't created to be used in any kind of real world scenario. 
 Just an educational project to learn more about all that I mentioned above.
