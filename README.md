@@ -15,12 +15,16 @@ This program is actually really simple to use. Once I release the executables yo
 * openjdk-15.0.1
 
 And for the dependencies you need:
+
 For linux:
 * apt-get install libpcap-dev 
+
 For CentOS
 * yum install libpcap-devel
+
 For Mac 
 * brew install libpcap
+
 For Windows
 * choco install winpcap
 
