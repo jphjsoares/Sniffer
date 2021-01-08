@@ -14,6 +14,16 @@ Just an educational project to learn more about all that I mentioned above.
 This program is actually really simple to use. Once I release the executables you will need:
 * openjdk-15.0.1
 
+And for the dependencies you need:
+For linux:
+* apt-get install libpcap-dev 
+For CentOS
+* yum install libpcap-devel
+For Mac 
+* brew install libpcap
+For Windows
+* choco install winpcap
+
 After running the executable, just double click the interface you want to listen to. Then, a new window will open and you need to click -start sniffing-
 Once sniffing begins, you can pause, resume or end the sniff (which will show you some statistics about the sniff).
 You can also run the app in the background and use it as a bandwith monitor.
