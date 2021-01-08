@@ -19,13 +19,13 @@ And for the dependencies you need:
 For linux:
 * apt-get install libpcap-dev 
 
-For CentOS
+For CentOS:
 * yum install libpcap-devel
 
-For Mac 
+For Mac: 
 * brew install libpcap
 
-For Windows
+For Windows:
 * choco install winpcap
 
 After running the executable, just double click the interface you want to listen to. Then, a new window will open and you need to click -start sniffing-
