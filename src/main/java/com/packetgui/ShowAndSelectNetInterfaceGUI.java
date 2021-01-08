@@ -49,6 +49,7 @@ public class ShowAndSelectNetInterfaceGUI {
                     final DefaultListModel interfacesList = new DefaultListModel();
 
                     for( PcapNetworkInterface netInt :  netsInterfaces){
+                        //Having issues with a PopOS(linux) virtual machine
                         interfacesList.addElement("[" + interfaceID + "] " + netInt.getDescription() + "Address -> " + netInt.getAddresses().get(0).getAddress());
                         interfaceID++;
                     }
