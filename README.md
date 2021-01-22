@@ -1,4 +1,4 @@
-# Packet Manager (SNIFFER)
+# SNIFFER
 
 This small program was made with the intention to deepen my following skills:
 
