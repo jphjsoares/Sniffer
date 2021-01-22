@@ -2,13 +2,16 @@
   <artifact type="jar" name="PacketManager:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/PacketManager_jar</output-path>
     <root id="archive" name="PacketManager.jar">
-      <element id="module-output" name="PacketManager" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/sun/jna/jna/3.0.9/jna-3.0.9.jar" path-in-jar="/" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="Sniffer" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/pcap4j/pcap4j-packetfactory-static/2.0.0-alpha.6/pcap4j-packetfactory-static-2.0.0-alpha.6.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/pcap4j/pcap4j-core/2.0.0-alpha.6/pcap4j-core-2.0.0-alpha.6.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/java/dev/jna/jna/5.1.0/jna-5.1.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/sun/jna/jna/3.0.9/jna-3.0.9.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

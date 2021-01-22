@@ -9,7 +9,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.List;
 
-public class ShowAndSelectNetInterfaceGUI {
+public class SniffingInterfaces {
 
     private static final JFrame networkInterfaceListerFrame = new JFrame("Network Interface Lister");
     private static final JPanel networkListerPanel = new JPanel(new BorderLayout(10,10));
@@ -26,7 +26,7 @@ public class ShowAndSelectNetInterfaceGUI {
         final PcapHandle handle;
         try {
             handle = networkInterfaceToUseInHandler.openLive(Sniffer.SNAPLEN, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, Sniffer.READ_TIMEOUT);
-            SniffGUI.sniffNetworkInterface(interfaceInput, handle);
+            SniffingGui.sniffNetworkInterface(interfaceInput, handle);
         } catch (PcapNativeException pcapNativeException) {
             pcapNativeException.printStackTrace();
         }
@@ -56,7 +56,7 @@ public class ShowAndSelectNetInterfaceGUI {
                     final JList interfaces = new JList(interfacesList);
                     interfaces.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                     interfaces.setSelectedIndex(0);
-                    interfaces.setVisibleRowCount(3);
+                    interfaces.setVisibleRowCount(4);
 
                     JScrollPane interfacesScroller = new JScrollPane(interfaces);
 
@@ -113,11 +113,13 @@ public class ShowAndSelectNetInterfaceGUI {
 
     public static void main(String[] args) {
         try {
+            System.out.println("Starting program");
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            createAndShowNetInterfaceLister();
         }
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        createAndShowNetInterfaceLister();
+
     }
 }

@@ -1,18 +1,13 @@
 package com.packetgui;
 
 
-import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PcapHandle;
-import org.pcap4j.core.PcapNativeException;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 
-public class SniffGUI {
+public class SniffingGui {
 
     public static  final JFrame networkSniffInterfaceFrame = new JFrame("Sniffing!");
     private static final JPanel networkLogPanel = new JPanel(new BorderLayout());
@@ -54,7 +49,7 @@ public class SniffGUI {
         networkLogPanel.add(SniffingToolbar.createToolbar(thread, threadOfSniff, handle),BorderLayout.NORTH);
         networkLogPanel.add(scrollSniffPanel, BorderLayout.CENTER);
 
-        networkSniffInterfaceFrame.setIconImage(ShowAndSelectNetInterfaceGUI.icon.getImage());
+        networkSniffInterfaceFrame.setIconImage(SniffingInterfaces.icon.getImage());
         networkSniffInterfaceFrame.setContentPane(networkLogPanel);
         networkSniffInterfaceFrame.setLocationRelativeTo(null);
         networkSniffInterfaceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

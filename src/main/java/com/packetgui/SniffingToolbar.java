@@ -24,7 +24,7 @@ public class SniffingToolbar {
         final long[] timesPausedGlobalHandle = {0};
 
 
-        SniffingThread threadOfSniff = new SniffingThread(handler, SniffGUI.networkSnifferLog);
+        SniffingThread threadOfSniff = new SniffingThread(handler, SniffingGui.networkSnifferLog);
 
 
         //Cant show a button to pause before the thread is being actually executed
@@ -49,8 +49,8 @@ public class SniffingToolbar {
                     MenuItem exitItem = new MenuItem("Exit");
                     final PopupMenu popup = new PopupMenu();
 
-                    SniffGUI.networkSniffInterfaceFrame.setVisible(false);
-                    TrayIcon trayIcon = new TrayIcon(ShowAndSelectNetInterfaceGUI.icon.getImage()); //Add here the icon of the app
+                    SniffingGui.networkSniffInterfaceFrame.setVisible(false);
+                    TrayIcon trayIcon = new TrayIcon(SniffingInterfaces.icon.getImage()); //Add here the icon of the app
                     trayIcon.setImageAutoSize(true);
                     trayIcon.setToolTip("Sniffing packets...");
 
@@ -63,7 +63,7 @@ public class SniffingToolbar {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             SystemTray.getSystemTray().remove(trayIcon);
-                            SniffGUI.networkSniffInterfaceFrame.setVisible(true);
+                            SniffingGui.networkSniffInterfaceFrame.setVisible(true);
                         }
                     });
 
@@ -83,7 +83,7 @@ public class SniffingToolbar {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             SystemTray.getSystemTray().remove(trayIcon);
-                            SniffGUI.networkSniffInterfaceFrame.setVisible(true);
+                            SniffingGui.networkSniffInterfaceFrame.setVisible(true);
                             endSniff.doClick();
                         }
                     });
@@ -95,7 +95,7 @@ public class SniffingToolbar {
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(SniffGUI.networkSnifferLog,
+                    JOptionPane.showMessageDialog(SniffingGui.networkSnifferLog,
                             "Looks like your operating system does not have a system tray. Can't run app in background",
                             "System tray Error",
                             JOptionPane.ERROR_MESSAGE);
@@ -122,7 +122,7 @@ public class SniffingToolbar {
             double[] statsHandler;
             @Override
             public void actionPerformed(ActionEvent e) {
-                SniffGUI.statsPanel.setVisible(true);
+                SniffingGui.statsPanel.setVisible(true);
                 pauseSniff.setVisible(false);
                 endSniff.setVisible(false);
                 runInBackground.setVisible(false);
@@ -144,25 +144,25 @@ public class SniffingToolbar {
                     } catch (PcapNativeException | NotOpenException pcapNativeException) { pcapNativeException.printStackTrace(); }
                 }
 
-                JOptionPane.showMessageDialog(SniffGUI.networkSniffInterfaceFrame, "Your sniffing process finished\nCheck some statistics below!\nGoodbye :)");
+                JOptionPane.showMessageDialog(SniffingGui.networkSniffInterfaceFrame, "Your sniffing process finished\nCheck some statistics below!\nGoodbye :)");
 
                 DecimalFormat df = new DecimalFormat("#####.##");
 
                 //Bytes conversion into mbytes, kbytes and gbytes
                 if (stats[2] < 1024) {
-                    SniffGUI.totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2]) + " bytes\n");
+                    SniffingGui.totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2]) + " bytes\n");
                 }
                 if(stats[2] > 1024) {
-                    SniffGUI.totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2] / 1024) + " Kbytes\n");
+                    SniffingGui.totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2] / 1024) + " Kbytes\n");
                 }
                 if (stats[2] > 1048576) {
-                    SniffGUI.totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2] / 1048576) + " Mbytes\n");
+                    SniffingGui.totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2] / 1048576) + " Mbytes\n");
                 }
                 if (stats[2] > 1073741824 ) {
-                    SniffGUI.totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2] / 1073741824) + " Gbytes\n");
+                    SniffingGui.totalLengthOfPackets.setText("Total size of packets: " + df.format(stats[2] / 1073741824) + " Gbytes\n");
                 }
-                SniffGUI.droppedPackets.setText("Packets dropped: " + (long) stats[1] + "\n");
-                SniffGUI.capturedPackets.setText("Packets captured: " + (long) stats[0] + "\n");
+                SniffingGui.droppedPackets.setText("Packets dropped: " + (long) stats[1] + "\n");
+                SniffingGui.capturedPackets.setText("Packets captured: " + (long) stats[0] + "\n");
 
             }
         });

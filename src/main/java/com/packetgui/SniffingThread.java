@@ -8,6 +8,7 @@ import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.core.PcapPacket;
 
 import javax.swing.*;
+import java.util.Arrays;
 
 public class SniffingThread implements Runnable{
     private volatile boolean keepSniffing = true;
@@ -36,7 +37,9 @@ public class SniffingThread implements Runnable{
 
             blocksOfPacketInfo = StringUtils.substringsBetween(String.valueOf(newPacket), "]", "[");
 
+
             if (newPacket != null) {
+                System.out.println(String.valueOf(newPacket));
                 //Index 1 shows the user the ethernet header
                 totalLength += newPacket.length();
                 networkSnifferLog.append(blocksOfPacketInfo[1] + "\n" + "#########################################\n");
